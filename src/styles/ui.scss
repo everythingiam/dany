@@ -1,0 +1,141 @@
+@import './variables.scss';
+
+@font-face {
+  font-family: 'RFDewi';
+  font-weight: 400; // Regular
+  font-style: normal;
+  src: url('../assets/font/RFDewi-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'RFDewi';
+  font-weight: 600; // Semibold
+  font-style: normal;
+  src: url('../assets/font/RFDewi-Semibold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'RFDewi';
+  font-weight: 700; // Bold
+  font-style: normal;
+  src: url('../assets/font/RFDewi-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'RFDewi';
+  font-weight: 600; // Semibold Italic
+  font-style: italic;
+  src: url('../assets/font/RFDewi-SemiboldItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'RFDewi';
+  font-weight: 400; // Regular Italic
+  font-style: italic;
+  src: url('../assets/font/RFDewi-italic.ttf') format('truetype');
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2{
+  font-size: 1.6rem;
+}
+
+p {
+  font-size: 1.4rem;
+}
+
+.btn {
+  border-radius: 1.3rem;
+  color: $white;
+  background-color: $black;
+  padding: 1.6rem 3rem;
+  filter: $drop_shadow;
+  font-weight: 400;
+}
+
+.icon-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .icon {
+    margin-bottom: 0.5rem;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 33rem;
+  gap: 2.5rem;
+  margin-bottom: 3rem;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+
+    li,
+    .text {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      column-gap: 2rem;
+
+      label {
+        color: $black;
+        // font-size: 1.1rem;
+        margin-bottom: 0.8rem;
+      }
+
+      textarea {
+        resize: none;
+        min-height: 9rem;
+      }
+
+      input,
+      textarea {
+        padding: 1.6rem 2rem;
+        background-color: #F3F5F6;
+        border-radius: 1.3rem;
+        filter: $drop_shadow;
+        width: 100%;
+        transition: 200ms;
+        font-size: 1.4rem;
+
+        &:disabled {
+          cursor: auto;
+          opacity: 0.6;
+        }
+
+        &::placeholder {
+          opacity: 1;  
+          color: $gray_06;
+        }
+
+        &:not(:disabled):hover {
+          background-color: $white;
+        }
+
+        &:focus {
+          // outline: 0.1rem solid black;
+          background-color: $white;
+        }
+      }
+    }
+
+    .row {
+      flex-direction: row;
+    }
+  }
+}
+
+a,
+a:link,
+a:visited {
+  color: $black;
+}
