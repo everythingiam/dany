@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom";
+
 const GameItem = ({ title, creator, currentplayers, maxplayers, speed}) => {
   return (
-    <article>
+    <Link to="/">
       <div>
         <h2>{ title }</h2>
         <p>{ creator }</p>
@@ -11,7 +13,7 @@ const GameItem = ({ title, creator, currentplayers, maxplayers, speed}) => {
       <div>
         <p className="speed">{ speed }</p>
       </div>
-    </article>
+    </Link>
   )
 };
 

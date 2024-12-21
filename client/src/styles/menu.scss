@@ -1,0 +1,112 @@
+@import './variables.scss';
+
+body {
+  background: url('../assets/background.png');
+  background-size: cover;
+}
+
+.dany-icon {
+  position: fixed;
+  top: 4rem;
+  left: 4rem;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  position: fixed;
+  right: 4rem;
+  bottom: 4rem;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+section.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  margin-top: -3%;
+
+  img {
+    width: 8rem;
+  }
+
+  h1 {
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin-bottom: 4.4rem;
+  }
+
+  a {
+    color: $gray_06;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+section.games {
+  display: flex;
+  flex-direction: column;
+  max-width: 61rem;
+  width: 100%;
+  align-items: center;
+  padding: 8rem 0;
+
+  a {
+    border-radius: 1.3rem;
+    background-color: $white;
+    display: grid;
+    grid-template-columns: 6fr 2fr 3fr;
+    padding: 3rem;
+    filter: $drop_shadow;
+    margin-bottom: 2rem;
+    width: 100%;
+
+    div p {
+      color: $gray_04;
+      display: flex;
+      align-items: center;
+    }
+
+    div p.players::before,
+    div p.speed::before {
+      display: inline-block;
+      width: 2.4rem;
+      height: 2.4rem;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      content: '';
+    }
+
+    div p.players::before {
+      background: url(../assets/miniman.svg);
+    }
+    div p.speed::before {
+      background: url(../assets/clock.svg);
+    }
+
+    h2 {
+      margin-bottom: 1.2rem;
+    }
+  }
+
+  .btn, .or {
+    margin-bottom: 3rem;
+  }
+
+  .btn {
+    padding-right: 8rem;
+    padding-left: 8rem;
+  }
+  
+}
