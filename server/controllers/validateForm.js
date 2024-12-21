@@ -1,11 +1,12 @@
-import * as yup from 'yup';
+// const { formSchema } = require('../../client/src/utils/schemas');
+const yup = require('yup');
 
 const regex = {
   nickname: /^[a-zA-Z0-9_]+$/,
   password: /^[a-zA-Z0-9!@#$%^&*()_+=[\]{};':",.<>?/\\|`~-]+$/,
 };
 
-export const formSchema = yup.object().shape({
+const formSchema = yup.object({
   nickname: yup
     .string()
     .min(3, 'Никнейм не меньше 3 символов')
@@ -19,3 +20,21 @@ export const formSchema = yup.object().shape({
     .matches(regex.password, 'Только латиница, цифры и символы')
     .required('Обязательно для заполнения'),
 });
+
+const validateForm = (req, res) => {
+  const formData = req.body;
+  formSchema
+    .validate(formData)
+    .catch((err) => {
+      res.status(422).send();
+      console.log(err.errors);
+    })
+    .then((valid) => {
+      if (valid) {
+        res.status(200).send();
+        console.log('form is good');
+      } 
+    });
+};
+
+module.exports = validateForm;

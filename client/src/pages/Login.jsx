@@ -3,8 +3,29 @@ import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { formSchema } from '../utils/schemas';
 
-const onSubmit = () => {
+const onSubmit = (values, actions) => {
   console.log('submitted');
+  const vals = {...values};
+  actions.resetForm();
+  fetch('http://localhost:4000/auth/login', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(vals),
+  }).catch(err => {
+    console.log(err);
+    return;
+  }).then(res => {
+    if (!res || !res.ok || res.status >= 400){
+      return;
+    }
+    return res.json();
+  }).then(data => {
+    if (!data) return;
+    console.log(data);
+  })
 };
 
 const Login = () => {
