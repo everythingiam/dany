@@ -14,7 +14,7 @@ export const formSchema = yup.object().shape({
     .required('Обязательно для заполнения'),
   password: yup
     .string()
-    .min(6, 'Пароль не меньше 6 символов')
+    .min(3, 'Пароль не меньше 6 символов')
     .max(20, 'Слишком длинный пароль')
     .matches(regex.password, 'Только латиница, цифры и символы')
     .required('Обязательно для заполнения'),

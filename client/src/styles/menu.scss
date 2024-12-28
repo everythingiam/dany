@@ -60,7 +60,11 @@ section.games {
   max-width: 61rem;
   width: 100%;
   align-items: center;
-  padding: 8rem 0;
+  padding: 6rem 0;
+  
+  h1{
+    margin-bottom: 3.5rem ;
+  }
 
   a {
     border-radius: 1.3rem;
@@ -101,7 +105,7 @@ section.games {
   }
 
   .btn, .or {
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
   }
 
   .btn {

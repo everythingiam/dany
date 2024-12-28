@@ -1,34 +1,39 @@
 const express = require('express');
-const {Server} = require('socket.io');
 const app = express();
-const helmet = require('helmet');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const authRouter = require('./routers/authRouter');
-
+const helmet = require('helmet');
+const userRouter = require('./routers/userRouter');
 const server = require('http').createServer(app);
-
-const io = new Server(server, {
-  cors: {
-    origin: 'http://localhost:5173',
-    credentials: 'true',
-  }
-})
+const errorHandler = require('./middleware/ErrorHandlingMiddleware')
+require('dotenv').config();
 
 app.use(helmet());
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true,
-}))
+app.use(
+  cors({
+    origin: `http://localhost:${process.env.CLIENT_PORT || 5173}`,
+    credentials: true,
+  })
+);
 app.use(express.json());
+app.use(cookieParser());
+app.use('/user', userRouter);
+app.use(
+  session({
+    secret: process.env.SECRET_KEY, 
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true, 
+      secure: process.env.NODE_ENV === 'production', 
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 1 неделя
+    },
+  })
+);
 
-app.use('/auth', authRouter)
+app.use(errorHandler);
 
-app.get('/', (req, res) => {
-  res.json('hi');
-})
-
-io.on('connect', socket => {})
-
-server.listen(4000, () => {
+server.listen(process.env.SERVER_PORT || 4000, () => {
   console.log('Server is listening on port 4000');
-})
+});
