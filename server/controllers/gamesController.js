@@ -4,8 +4,7 @@ const performFunction = require('../utils/performFunction');
 
 class gamesController {
   async getGames(req, res) {
-    // const token = req.cookies.session_token;
-    const token = '9966c122-8fc2-435a-95ed-090db54ea6b4';
+    const token = req.cookies.session_token;
     
     if (!token) {
       console.log('Error: No session token provided');
@@ -16,8 +15,6 @@ class gamesController {
     }
 
     const result = await performFunction('get_active_games', [token]);
-
-    console.log('Get games result:', result);
 
     if (result.status === 'success') {
       return res.status(200).json({
@@ -30,6 +27,7 @@ class gamesController {
       });
     }
   }
+  
 }
 
 module.exports = new gamesController();

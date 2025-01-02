@@ -9,6 +9,10 @@ body {
   position: fixed;
   top: 4rem;
   left: 4rem;
+
+  & img {
+    width: 18rem;
+  }
 }
 
 .info {

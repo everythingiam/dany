@@ -1,18 +1,20 @@
 import GameList from '../components/GameList';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import GamesService from '../API/GamesService';
 import { useFetching } from '../hooks/useFetching';
+import useIntervalQuery from '../hooks/useIntervalQuery';
 
 const Games = () => {
   const [array, setArray] = useState([]);
   const [fetchGames, isLoading] = useFetching(async () => {
     const response = await GamesService.getGames();
-    setArray(response.data);
+    const newGames = response.data;
+    if (JSON.stringify(newGames) !== JSON.stringify(array)) {
+      setArray(newGames);
+    }
   });
 
-  useEffect(() => {
-    fetchGames();
-  }, []);
+  useIntervalQuery(fetchGames, 4000);
 
   return (
     isLoading ? (<h1>Loading..</h1>) : (
