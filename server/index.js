@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 const userRouter = require('./routers/userRouter');
+const gamesRouter = require('./routers/gamesRouter');
 const server = require('http').createServer(app);
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 require('dotenv').config();
@@ -19,6 +20,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.use('/user', userRouter);
+app.use('/games', gamesRouter);
 app.use(
   session({
     secret: process.env.SECRET_KEY, 

@@ -10,14 +10,14 @@ class userController {
     console.log('Registration result:', result);
 
     if (result.status === 'success') {
-      res.cookie('session_token', result.data, {
+      res.cookie('session_token', result.data.token, {
         httpOnly: true,
         secure: process.env.ENVIRONMENT === 'production',
         sameSite: 'strict',
         maxAge: 24 * 60 * 60 * 1000, // 1 день
       });
 
-      console.log('User registered successfully with token:', result.data);
+      console.log('User registered successfully with token:', result.data.token);
 
       return res.status(200).json({
         status: 'success',
@@ -35,14 +35,14 @@ class userController {
     console.log('Login result:', result);
 
     if (result.status === 'success') {
-      res.cookie('session_token', result.data, {
+      res.cookie('session_token', result.data.token, {
         httpOnly: true,
         secure: process.env.ENVIRONMENT === 'production',
         sameSite: 'strict',
         maxAge: 24 * 60 * 60 * 1000, // 1 день
       });
 
-      console.log('User logged successfully with token:', result.data);
+      console.log('User logged successfully with token:', result.data.token);
 
       return res.status(200).json({
         status: 'success',
@@ -105,7 +105,7 @@ class userController {
 
     const result = await performFunction('check_user', [token]);
 
-    console.log('Check result:', result);
+    console.log('Check result from DB:', result);
 
     if (result.status === 'success') {
       return res.status(200).json({

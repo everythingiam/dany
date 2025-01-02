@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom";
 
-const GameItem = ({ title, creator, currentplayers, maxplayers, speed}) => {
+const GameItem = ({ game}) => {
   return (
     <Link to="/">
       <div>
-        <h2>{ title }</h2>
-        <p>{ creator }</p>
+        <h2>{ game.room_name }</h2>
+        <p>{ game.creator_login }</p>
       </div>
       <div>
-        <p className="players">{ currentplayers } / { maxplayers }</p>
+        <p className="players">{ game.current_amount } / { game.max_amount }</p>
       </div>
       <div>
-        <p className="speed">{ speed }</p>
+        <p className="speed">{ game.speed }</p>
       </div>
     </Link>
   )

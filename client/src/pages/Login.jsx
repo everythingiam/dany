@@ -12,9 +12,7 @@ const Login = () => {
   const onSubmit = async (values, actions) => {
     const vals = { ...values };
     actions.resetForm();
-
     const response = await UserService.postLogin(vals);
-
     if (response) {
       signin(values.nickname, () => navigate('/', { replace: true }));
     }

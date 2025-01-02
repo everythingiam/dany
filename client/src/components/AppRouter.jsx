@@ -3,7 +3,7 @@ import MenuLayout from './MenuLayout';
 import '../styles/common.scss';
 import Login from '../pages/Login';
 import Registration from '../pages/Registration';
-import GamesList from '../pages/GamesList';
+import Games from '../pages/Games';
 import ErrorPage from '../pages/ErrorPage';
 import PasswordRecovery from '../pages/PasswordRecovery';
 import Create from '../pages/Create';
@@ -38,7 +38,7 @@ const routes = createBrowserRouter([
         index: true,
         element: (
           <RequireAuth>
-            <GamesList />
+            <Games />
           </RequireAuth>
         ),
       },
