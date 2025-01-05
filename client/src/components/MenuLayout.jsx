@@ -39,7 +39,7 @@ const MenuLayout = () => {
         </div>
       )}
 
-      <main>
+      <main className='menu'>
         <Outlet />
       </main>
     </>

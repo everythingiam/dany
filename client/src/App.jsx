@@ -1,7 +1,5 @@
-// import { useEffect } from 'react';
 import AppRouter from './components/AppRouter';
-// import UserService from './API/UserService';
-// import { useAuth } from './hooks/useAuth';
+import './styles/common.scss';
 import { AuthProvider } from './hoc/AuthProvider';
 
 const App = () => {

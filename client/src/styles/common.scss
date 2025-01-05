@@ -1,15 +1,25 @@
 @import url(reset.scss);
 @import url(ui.scss);
 
-html 
-{
+html {
   font-size: 62.5%;
+}
+
+@media (max-width: 1180px) {
+  html {
+    font-size: 55%;
+  }
+}
+
+@media (min-width: 1350px) {
+  html {
+    font-size: 70%;
+  }
 }
 
 body {
   font-family: 'RFDewi';
-  font-weight: 600; 
-	font-style: normal;
+  font-weight: 600;
+  font-style: normal;
   font-size: 1.5rem;
 }
-
