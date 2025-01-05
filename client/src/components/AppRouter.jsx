@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import MenuLayout from './MenuLayout';
 import '../styles/common.scss';
+import MenuLayout from './MenuLayout';
 import Login from '../pages/Login';
 import Registration from '../pages/Registration';
 import Games from '../pages/Games';
@@ -9,6 +9,7 @@ import PasswordRecovery from '../pages/PasswordRecovery';
 import Create from '../pages/Create';
 import RequireAuth from '../hoc/RequireAuth';
 import Account from '../pages/Account';
+import Room from '../pages/Room';
 
 const routes = createBrowserRouter([
   {
@@ -44,6 +45,12 @@ const routes = createBrowserRouter([
       },
     ],
     errorElement: <ErrorPage />,
+  },
+  {
+    path: 'room',
+    element: (
+      <Room />
+    ),
   },
 ]);
 

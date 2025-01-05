@@ -35,6 +35,12 @@
   src: url('../assets/font/RFDewi-italic.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Klyakson';
+  src: url('../assets//font/Klyakson.ttf');
+  font-weight: 800;
+}
+
 h1 {
   font-size: 3rem;
   color: $black;
@@ -43,7 +49,6 @@ h1 {
 h2{
   font-size: 1.6rem;
   color: $black;
-
 }
 
 p {
@@ -64,6 +69,7 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-size: 1.4rem;
 }
 
 form {
