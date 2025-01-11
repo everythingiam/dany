@@ -8,9 +8,9 @@ const PlayerItem = ({ player, data }) => {
         src={`/avatars/${player.avatar}`}
         alt=""
         className={
-          data.active_person === player
+          data.active_person === player.login
             ? 'active'
-            : data.decisive_person === player
+            : data.decisive_person === player.login
             ? 'decisive'
             : ''
         }

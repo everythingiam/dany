@@ -37,6 +37,7 @@ const RoleTabs = ({ data, token }) => {
                 <li key={word}>
                   <button
                     onClick={() => handleClick(word)}
+                    className={word === data.active_word ? 'active' : ''}
                     disabled={
                       data.decisive_person !== data.player_login ||
                       data.phase_name !== 'decision'
