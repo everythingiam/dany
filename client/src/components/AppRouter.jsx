@@ -7,8 +7,10 @@ import ErrorPage from '../pages/ErrorPage';
 import PasswordRecovery from '../pages/PasswordRecovery';
 import Create from '../pages/Create';
 import RequireAuth from '../hoc/RequireAuth';
-import Account from '../pages/Account';
+import Account from '../pages/Profile';
 import Room from '../pages/Room';
+import Profile from '../pages/Profile';
+// import CardsCanvas from './CardsCanvas';
 
 const routes = createBrowserRouter([
   {
@@ -42,21 +44,33 @@ const routes = createBrowserRouter([
           </RequireAuth>
         ),
       },
+      {
+        path: 'profile',
+        element: (
+          <RequireAuth>
+            <Profile />
+          </RequireAuth>
+        ),
+      },
     ],
     errorElement: <ErrorPage />,
   },
   {
-    path: 'room',
+    path: ':token',
     element: (
-      <Room />
+      <RequireAuth>
+        <Room />
+      </RequireAuth>
     ),
   },
+  // {
+  //   path: 'test',
+  //   element: <CardsCanvasTest />,
+  // },
 ]);
 
 const AppRouter = () => {
-  return (
-    <RouterProvider router={routes} />
-  );
+  return <RouterProvider router={routes} />;
 };
 
 export default AppRouter;

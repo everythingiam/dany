@@ -19,3 +19,10 @@ export const formSchema = yup.object().shape({
     .matches(regex.password, 'Только латиница, цифры и символы')
     .required('Обязательно для заполнения'),
 });
+
+export const phaseTranslations = {
+  waiting: 'Ожидание',
+  layout: 'Раскладка',
+  discussion: 'Обсуждение',
+  decision: 'Решение'
+}

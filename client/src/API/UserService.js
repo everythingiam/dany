@@ -3,11 +3,12 @@ import axios from 'axios';
 export default class UserService {
   static async postRegistration(values) {
     const response = await axios.post(
-      'http://localhost:4000/user/registration', values, 
+      'http://localhost:4000/user/registration',
+      values,
       {
-        withCredentials: true, 
+        withCredentials: true,
         headers: {
-          'Content-Type': 'application/json', 
+          'Content-Type': 'application/json',
         },
       }
     );
@@ -17,11 +18,12 @@ export default class UserService {
 
   static async postLogin(values) {
     const response = await axios.post(
-      'http://localhost:4000/user/login', values, 
+      'http://localhost:4000/user/login',
+      values,
       {
-        withCredentials: true, 
+        withCredentials: true,
         headers: {
-          'Content-Type': 'application/json', 
+          'Content-Type': 'application/json',
         },
       }
     );
@@ -30,32 +32,53 @@ export default class UserService {
   }
 
   static async logout() {
-    const response = await axios.get(
-      'http://localhost:4000/user/logout',
-      {
-        withCredentials: true, 
-        headers: {
-          'Content-Type': 'application/json', 
-        },
-      }
-    );
+    const response = await axios.get('http://localhost:4000/user/logout', {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
     return response.data;
   }
 
   static async check() {
+    const response = await axios.get('http://localhost:4000/user/check', {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.data.status === 'success') {
+      return 'user';
+    } else return null;
+  }
+
+  static async getUserData() {
     const response = await axios.get(
-      'http://localhost:4000/user/check',
+      'http://localhost:4000/user/getuserdata',
       {
-        withCredentials: true, 
+        withCredentials: true,
         headers: {
-          'Content-Type': 'application/json', 
+          'Content-Type': 'application/json',
         },
       }
     );
+    return response.data;
+  }
 
-    if (response.data.status === 'success'){
-      return 'user';
-    } else return null;
+  static async updateAvatar(avatar) {
+    const response = await axios.post(
+      'http://localhost:4000/user/updateavatar',
+      { avatar },
+      {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response;
   }
 }

@@ -1,15 +1,27 @@
-import PlayerItem from "./PlayerItem";
+import PlayerItem from './PlayerItem';
+import GamesService from '../API/GamesService';
+import { useEffect, useState } from 'react';
+import { useFetching } from '../hooks/useFetching';
 
-const PlayersList = () => {
+const PlayersList = ({ data, token }) => {
+  const [players, setPlayers] = useState([]);
+
+  const [fetchUserData] = useFetching(async () => {
+    const response = await GamesService.getPlayers(token);
+    setPlayers(response.data);
+  });
+
+  useEffect(() => {
+    fetchUserData();
+  }, [data.players]);
+
   return (
     <section className="players">
-      <PlayerItem />
-      <PlayerItem />
-      <PlayerItem />
-      <PlayerItem />
-      <PlayerItem />
+      {players.map((player) => (
+        <PlayerItem key={player.login} player={player} data={data} />
+      ))}
     </section>
-  )
+  );
 };
 
 export default PlayersList;

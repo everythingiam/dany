@@ -46,7 +46,7 @@ h1 {
   color: $black;
 }
 
-h2{
+h2 {
   font-size: 1.6rem;
   color: $black;
 }
@@ -63,6 +63,19 @@ p {
   padding: 1.6rem 3rem;
   filter: $drop_shadow;
   font-weight: 400;
+  transition: ease-in 100ms;
+
+  &:hover {
+    background-color: $black_hover;
+  }
+}
+.white {
+  background-color: $white;
+  color: $black;
+
+  &:hover {
+    background-color: $white_hover;
+  }
 }
 
 .icon-btn {
@@ -70,6 +83,18 @@ p {
   flex-direction: column;
   align-items: center;
   font-size: 1.4rem;
+}
+
+.avatar {
+  border-radius: 50%;
+  width: 7rem;
+  margin-bottom: 1rem;
+  border: 2px solid $black !important;
+  cursor: pointer;
+}
+
+.selected {
+  border: 4px solid $black_hover !important;
 }
 
 form {
@@ -113,7 +138,7 @@ form {
       input,
       textarea {
         padding: 1.6rem 2rem;
-        background-color: #F3F5F6;
+        background-color: #f3f5f6;
         border-radius: 1.3rem;
         filter: $drop_shadow;
         width: 100%;
@@ -126,7 +151,7 @@ form {
         }
 
         &::placeholder {
-          opacity: 1;  
+          opacity: 1;
           color: $gray_06;
         }
 
@@ -140,7 +165,7 @@ form {
         }
 
         &.input-error {
-          border: 1px solid rgb(249, 92, 49)
+          border: 1px solid rgb(249, 92, 49);
         }
       }
     }

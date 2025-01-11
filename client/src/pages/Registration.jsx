@@ -16,7 +16,7 @@ const Registration = () => {
     const response = await UserService.postRegistration(vals);
 
     if (response) {
-      signin(values.nickname, () => navigate('/', { replace: true }));
+      signin(values.nickname, () => navigate('/profile', { replace: true }));
     }
   };
 

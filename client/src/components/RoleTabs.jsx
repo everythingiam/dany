@@ -1,38 +1,54 @@
 import Danycard from '../assets/danycard.svg';
+import Personcard from '../assets/personcard.svg';
+import Emptycard from '../assets/emptycard.svg';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import GamesService from '../API/GamesService';
 
-const RoleTabs = () => {
+const RoleTabs = ({ data, token }) => {
+  const handleClick = async (word) => {
+    await GamesService.makeDecision(token, word);
+    await GamesService.getGameData(token);
+  };
+
   return (
     <Tabs defaultIndex={2} onSelect={(index) => console.log(index)}>
-      <TabList>
-        <Tab>Слова</Tab>
-        <Tab>Моя роль</Tab>
-      </TabList>
+      {data.player_role && (
+        <TabList>
+          <Tab>Моя роль</Tab>
+          <Tab>Слова</Tab>
+        </TabList>
+      )}
       <TabPanel>
-        <div className="words">
-          <ul className="klyakson">
-            <li>
-              <button>1 · внутренний покой</button>
-            </li>
-            <li>
-              <button>2 · душа</button>
-            </li>
-            <li>
-              <button>3 · сожаление</button>
-            </li>
-            <li>
-              <button>4 · восточный</button>
-            </li>
-            <li>
-              <button>5 · планета</button>
-            </li>
-          </ul>
+        <div className="card">
+          {data.player_role === 'dany' ? (
+            <img src={Danycard} alt="" />
+          ) : data.player_role === 'person' ? (
+            <img src={Personcard} alt="" />
+          ) : (
+            <img src={Emptycard} alt="" />
+          )}
         </div>
       </TabPanel>
       <TabPanel>
-        <div className='card'>
-          <img src={Danycard} alt="" />
-        </div>
+        {data.player_role && (
+          <div className="words">
+            <ul className="klyakson">
+              {data.ingame_words.map((word, index) => (
+                <li key={word}>
+                  <button
+                    onClick={() => handleClick(word)}
+                    disabled={
+                      data.decisive_person !== data.player_login ||
+                      data.phase_name !== 'decision'
+                    }
+                  >
+                    {index + 1} · {word}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </TabPanel>
     </Tabs>
   );

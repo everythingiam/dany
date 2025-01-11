@@ -17,7 +17,10 @@ class userController {
         maxAge: 24 * 60 * 60 * 1000, // 1 день
       });
 
-      console.log('User registered successfully with token:', result.data.token);
+      console.log(
+        'User registered successfully with token:',
+        result.data.token
+      );
 
       return res.status(200).json({
         status: 'success',
@@ -30,7 +33,10 @@ class userController {
 
   async login(req, res) {
     const { nickname, password } = req.body;
-    const result = await performFunction('authorize_user', [nickname, password]);
+    const result = await performFunction('authorize_user', [
+      nickname,
+      password,
+    ]);
 
     console.log('Login result:', result);
 
@@ -71,7 +77,7 @@ class userController {
     console.log('Logout result:', result);
 
     if (result.status === 'success') {
-        res.clearCookie('session_token', {
+      res.clearCookie('session_token', {
         httpOnly: true,
         secure: process.env.ENVIRONMENT === 'production',
         sameSite: 'strict',
@@ -85,6 +91,32 @@ class userController {
       });
     } else {
       console.log('Error during logout:', result.message);
+      return res.status(400).json({
+        status: 'error',
+        message: result.message,
+      });
+    }
+  }
+
+  async getUserData(req, res) {
+    const token = req.cookies.session_token;
+
+    if (!token) {
+      console.log('Error: No session token provided');
+      return res.status(400).json({
+        status: 'error',
+        message: 'No session token provided',
+      });
+    }
+
+    const result = await performFunction('get_user_data', [token]);
+
+    if (result.status === 'success') {
+      return res.status(200).json({
+        status: 'success',
+        data: result,
+      });
+    } else {
       return res.status(400).json({
         status: 'error',
         message: result.message,
@@ -117,6 +149,22 @@ class userController {
         status: 'error',
         message: result.message,
       });
+    }
+  }
+
+  async updateAvatar(req, res) {
+    const token = req.cookies.session_token;
+    const avatar  = req.body.avatar;
+
+    const result = await performFunction('update_user_avatar', [token, avatar]);
+
+    if (result.status === 'success') {
+      return res.status(200).json({
+        status: 'success',
+        message: 'User logged successfully',
+      });
+    } else {
+      return res.status(400).json({ status: 'error', message: result.message });
     }
   }
 }
