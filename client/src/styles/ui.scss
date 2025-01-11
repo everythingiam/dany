@@ -93,7 +93,7 @@ p {
   cursor: pointer;
 }
 
-.selected {
+.avatar .selected {
   border: 4px solid $black_hover !important;
 }
 
@@ -108,7 +108,11 @@ form {
     display: flex;
     flex-direction: column;
     gap: 1.4rem;
-
+    label, .label {
+      color: $black;
+      // font-size: 1.1rem;
+      margin-bottom: 0.8rem;
+    }
     li,
     .text {
       display: flex;
@@ -124,19 +128,14 @@ form {
         color: rgb(216, 60, 17);
       }
 
-      label {
-        color: $black;
-        // font-size: 1.1rem;
-        margin-bottom: 0.8rem;
-      }
-
       textarea {
         resize: none;
         min-height: 9rem;
       }
 
       input,
-      textarea {
+      textarea,
+      .input-style {
         padding: 1.6rem 2rem;
         background-color: #f3f5f6;
         border-radius: 1.3rem;
@@ -172,6 +171,8 @@ form {
 
     .row {
       flex-direction: row;
+      justify-content: space-between;
+      gap: 3rem;
     }
   }
 }
@@ -181,3 +182,49 @@ a:link,
 a:visited {
   color: $black;
 }
+
+.number{
+  flex-grow: 1;
+  width: 20rem;
+}
+
+.numberInput {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+
+  .arrow {
+    font-size: 2rem;
+  }
+}
+.speedInput {
+  display: flex;
+  justify-content: space-between;
+  max-width: 22rem;
+  width: 100%;
+
+  button {
+    &:hover {
+      text-decoration: underline;
+    }
+
+  }
+
+  .selected {
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .line {
+    width: 1.5px;
+    height: 2.3rem;
+    background-color: $black;
+    font-size: 2.5rem;
+  }
+}
+
+.whole-width{
+  width: 100%;
+}
+

@@ -82,4 +82,18 @@ export default class GamesService {
     return response.data;
   }
 
+  static async createRoom(number, speed, name) {
+    const response = await axios.post(
+      `http://localhost:4000/games/create_room/`, {number, speed, name}, 
+      {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    return response.data;
+  }
+
 }

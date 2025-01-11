@@ -39,6 +39,7 @@ const CardsCanvas = observer(({ token, data, flag }) => {
     const socket = new WebSocket('ws://localhost:4000/');
     canvasState.setSocket(socket);
     canvasState.setSessionId(token);
+    console.log(socket);
  
     socket.onopen = () => {
       console.log('Подключение установлено');
@@ -46,6 +47,23 @@ const CardsCanvas = observer(({ token, data, flag }) => {
         JSON.stringify({
           id: token,
           method: 'connection',
+        })
+      );
+    
+      // Отправить текущее состояние всех карт
+      const allCards = this.canvas.getObjects().map((card) => ({
+        top: card.top,
+        left: card.left,
+        angle: card.angle,
+        zIndex: this.canvas.getObjects().indexOf(card),
+        isFlipped: card.isFlipped,
+        cardId: card.cardId,
+      }));
+      socket.send(
+        JSON.stringify({
+          method: 'sync',
+          id: token,
+          cards: allCards,
         })
       );
     };

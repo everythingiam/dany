@@ -21,8 +21,8 @@ class gamesController {
   }
 
   async getGameData(req, res) {
-    const user_token = req.cookies.session_token; 
-    const game_token = req.params.token; 
+    const user_token = req.cookies.session_token;
+    const game_token = req.params.token;
 
     const result = await performFunction('get_game_data', [
       user_token,
@@ -42,13 +42,10 @@ class gamesController {
   }
 
   async joinRoom(req, res) {
-    const user_token = req.cookies.session_token; 
-    const game_token = req.params.token; 
+    const user_token = req.cookies.session_token;
+    const game_token = req.params.token;
 
-    const result = await performFunction('join_room', [
-      user_token,
-      game_token,
-    ]);
+    const result = await performFunction('join_room', [user_token, game_token]);
 
     if (result.status === 'success') {
       return res.status(200).json({
@@ -63,8 +60,8 @@ class gamesController {
   }
 
   async leaveRoom(req, res) {
-    const user_token = req.cookies.session_token; 
-    const game_token = req.params.token; 
+    const user_token = req.cookies.session_token;
+    const game_token = req.params.token;
 
     const result = await performFunction('leave_room', [
       user_token,
@@ -84,8 +81,8 @@ class gamesController {
   }
 
   async makeDecision(req, res) {
-    const user_token = req.cookies.session_token; 
-    const game_token = req.params.token; 
+    const user_token = req.cookies.session_token;
+    const game_token = req.params.token;
     const word = req.body.word;
 
     const result = await performFunction('make_decision', [
@@ -107,8 +104,8 @@ class gamesController {
   }
 
   async getPlayers(req, res) {
-    const user_token = req.cookies.session_token; 
-    const game_token = req.params.token; 
+    const user_token = req.cookies.session_token;
+    const game_token = req.params.token;
 
     const result = await performFunction('get_players', [
       user_token,
@@ -120,6 +117,30 @@ class gamesController {
     if (result.status === 'success') {
       return res.status(200).json({
         data: result.players,
+      });
+    } else {
+      return res.status(400).json({
+        status: 'error',
+        message: result.message,
+      });
+    }
+  }
+
+  async createRoom(req, res) {
+    const user_token = req.cookies.session_token;
+
+    const result = await performFunction('create_game_room', [
+      user_token,
+      req.body.name,
+      req.body.number,
+      req.body.speed,
+    ]);
+
+    console.log(result);
+
+    if (result.status === 'success') {
+      return res.status(200).json({
+        data: result.data.room_token,
       });
     } else {
       return res.status(400).json({

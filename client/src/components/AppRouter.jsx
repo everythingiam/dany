@@ -5,12 +5,10 @@ import Registration from '../pages/Registration';
 import Games from '../pages/Games';
 import ErrorPage from '../pages/ErrorPage';
 import PasswordRecovery from '../pages/PasswordRecovery';
-import Create from '../pages/Create';
 import RequireAuth from '../hoc/RequireAuth';
 import Account from '../pages/Profile';
 import Room from '../pages/Room';
 import Profile from '../pages/Profile';
-// import CardsCanvas from './CardsCanvas';
 
 const routes = createBrowserRouter([
   {
@@ -20,14 +18,6 @@ const routes = createBrowserRouter([
       { path: 'login', element: <Login /> },
       { path: 'registration', element: <Registration /> },
       { path: 'recovery', element: <PasswordRecovery /> },
-      {
-        path: 'create',
-        element: (
-          <RequireAuth>
-            <Create />
-          </RequireAuth>
-        ),
-      },
       {
         path: 'account',
         element: (

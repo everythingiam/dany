@@ -1,4 +1,9 @@
 @import './variables.scss';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/close';
+@import 'bootstrap/scss/modal';
 
 body {
   background: url('../assets/background.png');
@@ -152,3 +157,38 @@ section.games {
     }
   }
 }
+
+.modal-content {
+  background: url('../assets/background.png');
+  border-radius: $radius;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+
+  h1{
+    margin-bottom: 3rem;
+  }
+
+  form{
+    margin-bottom: 3rem;
+  }
+
+  .btn-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+}
+
+// .modal-header {
+//   justify-content: center;
+//   .btn-close {
+//     justify-self: flex-end;
+//     margin: 0;
+//   }
+// }
+// .modal-body{
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }

@@ -151,6 +151,11 @@ class CanvasState {
       .getObjects()
       .find((obj) => obj.cardId === coords.cardId);
 
+      if (!existingCard) {
+        console.error(`Card with ID ${coords.cardId} not found!`);
+        return;
+      }
+
       console.log(existingCard);
  
     existingCard.set({
