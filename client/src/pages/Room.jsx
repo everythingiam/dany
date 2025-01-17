@@ -14,7 +14,6 @@ import UserService from '../API/UserService';
 const Room = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [flag, setFlag] = useState(false);
   const [data, setData] = useState(null);
   const [login, setLogin] = useState('');
 
@@ -25,7 +24,6 @@ const Room = () => {
     }
 
     setData(response.data);
-    (response.data.phase_name === 'layout') ? setFlag(true) : setFlag(false);
   });
 
   useIntervalQuery(fetchGameData, 4000);
@@ -34,10 +32,10 @@ const Room = () => {
     const getLogin = async () => {
       const response = await UserService.getUserData();
       setLogin(response.data.login);
-    }
+    };
 
     getLogin();
-  }, [])
+  }, []);
 
   if (isLoading || !data) {
     return <div>Loading...</div>;
@@ -49,7 +47,11 @@ const Room = () => {
         <div className="left">
           <TopBar data={data} token={params.token} />
           {data.phase_name !== 'waiting' && (
-            <CardsCanvas data={data} token={params.token} flag={flag} login={login}/>
+            <CardsCanvas
+              data={data}
+              token={params.token}
+              login={login}
+            />
           )}
           <PlayersList data={data} token={params.token} />
         </div>

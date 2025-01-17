@@ -1,14 +1,10 @@
 import Back from '../assets/cards/back.png';
 import * as fabric from 'fabric';
  
-let cardCounter = 1;
- 
-export class cardItem {
+export class CardItem {
   constructor(src) {
     return new Promise((resolve) => {
       const img = new Image();
-      const cardId = cardCounter;
-      cardCounter++;
  
       img.onload = () => {
         const imgObj = new fabric.Image(img, {
@@ -44,7 +40,6 @@ export class cardItem {
         imgObj.lockScalingX = true;
         imgObj.lockScalingY = true;
         imgObj.hasRotatingPoint = true;
-        imgObj.cardId = cardId;
  
         resolve(imgObj);
       };
