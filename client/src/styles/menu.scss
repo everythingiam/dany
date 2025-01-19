@@ -159,25 +159,47 @@ section.games {
   }
 }
 
-.modal-content {
-  background: url('../assets/background.png');
-  border-radius: $radius;
-  justify-content: center;
-  align-items: center;
-  padding: 3rem;
+.rules {
+  .roles {
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    margin-bottom: 4rem;
 
-  h1{
-    margin-bottom: 3rem;
+    .role {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 30rem;
+      p {
+        font-size: 1.4rem;
+      }
+
+      img {
+        width: 8rem;
+        margin-bottom: 1rem;
+      }
+    }
   }
 
-  form{
-    margin-bottom: 3rem;
-  }
+  .hodi {
+    .hod {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 2rem;
+      align-items: center;
 
-  .btn-close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+      p {
+        width: 100%;
+        max-width: 60%;
+      }
+
+      img {
+        max-width: 18rem;
+      }
+    }
   }
 }
 

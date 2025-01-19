@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 
 const CardsCanvas = observer(({ token, data, login }) => {
   const [flag, setFlag] = useState(false);
-  const [cardsReady, setCardsReady] = useState(false);
+  const [canvasReady, setCanvasReady] = useState(false);
   const canvasRef = useRef();
 
   useEffect(() => {
@@ -14,13 +14,14 @@ const CardsCanvas = observer(({ token, data, login }) => {
       setFlag(false);
     }
 
-    if (data.phase_name !== 'layout') CanvasState.disable();
+    if (data.phase_name !== 'layout' && canvasReady) CanvasState.disable();
   }, [data.phase_name]);
 
   useEffect(() => {
     const initCanvas = async () => {
       await CanvasState.init(canvasRef.current);
       await CanvasState.syncCards();
+      setCanvasReady(true);
     };
 
     initCanvas();
@@ -44,12 +45,12 @@ const CardsCanvas = observer(({ token, data, login }) => {
       for (const src of cards) {
         await CanvasState.addCard(src);
       }
-      setCardsReady(true);
-      
-      CanvasState.disable();
 
-      if (data.active_person === login && data.phase_name === 'layout') {
-        CanvasState.enable();
+      if (canvasReady) {
+        CanvasState.disable();
+        if (data.active_person === login && data.phase_name === 'layout') {
+          CanvasState.enable();
+        }
       }
     };
 

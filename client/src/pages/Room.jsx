@@ -21,7 +21,7 @@ const Room = () => {
   const [data, setData] = useState(null);
   const [login, setLogin] = useState('');
   const [show, setShow] = useState(false);
-  const [score, setScore] = useState(null);
+  const [score, setScore] = useState({ dany: 0, persons: 0 });
   const [winner, setWinner] = useState(null);
 
   const [fetchGameData, isLoading] = useFetching(async () => {
@@ -32,7 +32,6 @@ const Room = () => {
         persons: response.data.person_wins,
       });
     }
-
     if (response.data.status === 'error') {
       setShow(true);
       if (!score) {
@@ -47,7 +46,6 @@ const Room = () => {
         setWinner('Победа за: Личности');
       } else if (!winner) {
         setWinner('Стало слишком мало игроков');
-
       }
     }
 
@@ -78,8 +76,7 @@ const Room = () => {
 
   const isGameStarted = data.phase_name !== 'waiting';
 
-  const isPlayerInGame = 
-    data.players && data.players.includes(login);
+  const isPlayerInGame = data.players && data.players.includes(login);
 
   return (
     <>
@@ -90,7 +87,7 @@ const Room = () => {
             <CardsCanvas data={data} token={params.token} login={login} />
           )}
           {isPlayerActive ? (
-            <LayoutTip data={data} token={params.token} fetch={fetchGameData}/>
+            <LayoutTip data={data} token={params.token} fetch={fetchGameData} />
           ) : (
             <PlayersList data={data} token={params.token} />
           )}
@@ -102,7 +99,7 @@ const Room = () => {
         </div>
         <div className="right">
           <Chat data={data} token={params.token} />
-          <RoleTabs data={data} token={params.token} fetch={fetchGameData}/>
+          <RoleTabs data={data} token={params.token} fetch={fetchGameData} />
         </div>
       </main>
 
@@ -112,7 +109,7 @@ const Room = () => {
         <div className="score">
           <img src={Dany} alt="Dany" />
           <p className="klyakson">
-            {score ? `${score.dany} : ${score.persons}` : 'Loading...'}
+            {score ? `${score.dany} : ${score.persons}` : '0 : 0'}
           </p>
           <img src={Person} alt="Person" />
         </div>

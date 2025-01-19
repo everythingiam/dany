@@ -5,9 +5,11 @@ import GamesService from '../API/GamesService';
 import Person from '../assets/person.svg';
 import { useNavigate } from 'react-router-dom';
 import { phaseTranslations } from '../utils/schemas';
+import RulesModal from './RulesModal';
 
 const TopBar = ({ data, token }) => {
   const navigate = useNavigate();
+  const [rulesShow, setRulesShow] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
   const phase_name = phaseTranslations[data.phase_name] || data.phase_name;
 
@@ -59,7 +61,7 @@ const TopBar = ({ data, token }) => {
     <section className="top-bar">
       <div className="btns">
         <IconButton icon={'leave'} onClick={handleLeave} />
-        <IconButton icon={'question'} />
+        <IconButton icon={'question'} onClick={() => setRulesShow(true)}/>
       </div>
       <div className="score">
         <img src={Dany} alt="" />
@@ -72,6 +74,7 @@ const TopBar = ({ data, token }) => {
         <p className="klyakson">{phase_name}</p>
         <p className="klyakson">{formatTime(remainingTime)}</p>
       </div>
+      <RulesModal show={rulesShow} onHide={() => setRulesShow(false)}/>
     </section>
   );
 };
