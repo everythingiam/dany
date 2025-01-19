@@ -28,6 +28,10 @@
   background: none;
   background-color: $room_gray;
 
+  .join {
+    margin-top: 4rem;
+  }
+
   .players {
     display: flex;
     width: 85%;
@@ -96,7 +100,7 @@
 
       .active {
         opacity: 1 !important;
-        color: rgb(229, 0, 0)
+        color: rgb(229, 0, 0);
       }
     }
 
@@ -147,6 +151,29 @@
             opacity: 0.5;
             cursor: auto;
           }
+        }
+      }
+    }
+  }
+
+  .layout-tip {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 85%;
+
+    ul {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 3rem;
+
+      li {
+        display: flex;
+        align-items: center;
+
+        img {
+          margin-right: 1rem;
         }
       }
     }
@@ -297,8 +324,6 @@
   .canvas-container {
     // border: 1px solid #000;
     margin-top: 3rem;
-
-    
   }
 
   .disabled {
@@ -307,11 +332,33 @@
   }
 }
 
+.modal-content {
+  .score {
+    width: 22rem;
+    justify-content: space-between;
+    border-radius: $radius;
+    display: flex;
+    align-items: center;
+    background-color: none;
+    height: 100%;
+    filter: $drop_shadow;
+    margin-bottom: 4rem;
+
+    img {
+      width: 6.7rem;
+      height: 6.7rem;
+    }
+  }
+}
+
 @media (min-width: 1350px) {
-  .canvas-container {
-    transform: scale(1.2);
-    margin-top: 8rem;
-    margin-bottom: 6rem;
+  .game-room {
+    .canvas-container {
+      transform: scale(1.2);
+      margin-top: 18rem;
+      margin-bottom: 10rem;
+      transform: scale(1.5);
+    }
   }
 }
 

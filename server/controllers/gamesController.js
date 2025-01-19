@@ -126,6 +126,29 @@ class gamesController {
     }
   }
 
+  async endLayout(req, res) {
+    const user_token = req.cookies.session_token;
+    const game_token = req.params.token;
+
+    const result = await performFunction('end_layout', [
+      user_token,
+      game_token,
+    ]);
+
+    console.log('end layput result - ', result);
+
+    if (result.status === 'success') {
+      return res.status(200).json({
+        data: result.data,
+      });
+    } else {
+      return res.status(400).json({
+        status: 'error',
+        message: result.message,
+      });
+    }
+  }
+
   async createRoom(req, res) {
     const user_token = req.cookies.session_token;
 

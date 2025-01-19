@@ -50,15 +50,15 @@ const TopBar = ({ data, token }) => {
     startTimer(seconds);
   }, [data.remaining_time]); 
 
-  const handleClick = async () => {
-    await GamesService.leaveRoom(token);
+  const handleLeave = async () => {
     navigate('/');
+    await GamesService.leaveRoom(token);
   };
 
   return (
     <section className="top-bar">
       <div className="btns">
-        <IconButton icon={'leave'} onClick={handleClick} />
+        <IconButton icon={'leave'} onClick={handleLeave} />
         <IconButton icon={'question'} />
       </div>
       <div className="score">

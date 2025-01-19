@@ -12,7 +12,7 @@ class CanvasState {
     this.canvas = null;
   }
 
-  init(canvasRef) {
+  async init(canvasRef) {
     if (this.canvas) {
       return;
     }
@@ -55,8 +55,7 @@ class CanvasState {
       .find((obj) => obj.frontImage === coords.frontImage);
 
     if (!existingCard) {
-      console.error(`Card ${coords.frontImage} not found`);
-      // return;
+      return;
     }
 
     this.#setCoordsOnCard(existingCard, coords);
@@ -90,6 +89,22 @@ class CanvasState {
     localStorage.clear();
     await this.removeAllCards();
     this.#disposeCanvas();
+  }
+
+  disable() {
+    this.canvas.forEachObject(function (o) {
+      o.selectable = false;
+      o.evented = false;
+    });
+    this.canvas.selection = false;
+  }
+
+  enable() {
+    this.canvas.selection = true;
+    this.canvas.forEachObject(function (o) {
+      o.selectable = true;
+      o.evented = true;
+    });
   }
 
   #listen() {
@@ -181,7 +196,7 @@ class CanvasState {
       }
     }
   }
-  
+
   #sendActiveObjectData = (activeObject) => {
     if (!activeObject) return;
 

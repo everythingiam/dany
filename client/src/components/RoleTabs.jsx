@@ -4,10 +4,10 @@ import Emptycard from '../assets/emptycard.svg';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import GamesService from '../API/GamesService';
 
-const RoleTabs = ({ data, token }) => {
+const RoleTabs = ({ data, token, fetch }) => {
   const handleClick = async (word) => {
     await GamesService.makeDecision(token, word);
-    await GamesService.getGameData(token);
+    fetch();
   };
 
   return (

@@ -1,5 +1,5 @@
 import Person from '../assets/person.svg';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { formSchema } from '../utils/schemas';
 import UserService from '../API/UserService';
@@ -7,7 +7,6 @@ import { useAuth } from '../hooks/useAuth';
 
 const Registration = () => {
   const {signin} = useAuth();
-  const navigate = useNavigate();
 
   const onSubmit = async (values, actions) => {
     const vals = { ...values };
@@ -16,7 +15,7 @@ const Registration = () => {
     const response = await UserService.postRegistration(vals);
 
     if (response) {
-      signin(values.nickname, () => navigate('/profile', { replace: true }));
+      signin(values.nickname, () => window.location.href = '/profile');
     }
   };
 

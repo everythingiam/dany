@@ -14,7 +14,14 @@ class userController {
         httpOnly: true,
         secure: process.env.ENVIRONMENT === 'production',
         sameSite: 'strict',
-        maxAge: 24 * 60 * 60 * 1000, // 1 день
+        maxAge: 3 * 24 * 60 * 60 * 1000, // 3 дня
+      });
+
+      res.cookie('login', nickname, {
+        httpOnly: true,
+        secure: process.env.ENVIRONMENT === 'production',
+        sameSite: 'strict',
+        maxAge: 3 * 24 * 60 * 60 * 1000, // 3 дня
       });
 
       console.log(
@@ -45,10 +52,18 @@ class userController {
         httpOnly: true,
         secure: process.env.ENVIRONMENT === 'production',
         sameSite: 'strict',
-        maxAge: 24 * 60 * 60 * 1000, // 1 день
+        maxAge: 3 * 24 * 60 * 60 * 1000, // 3 дня
+      });
+
+      res.cookie('login', nickname, {
+        httpOnly: true,
+        secure: process.env.ENVIRONMENT === 'production',
+        sameSite: 'strict',
+        maxAge: 3 * 24 * 60 * 60 * 1000, // 3 дня
       });
 
       console.log('User logged successfully with token:', result.data.token);
+      
 
       return res.status(200).json({
         status: 'success',
@@ -78,6 +93,11 @@ class userController {
 
     if (result.status === 'success') {
       res.clearCookie('session_token', {
+        httpOnly: true,
+        secure: process.env.ENVIRONMENT === 'production',
+        sameSite: 'strict',
+      });
+      res.clearCookie('login', {
         httpOnly: true,
         secure: process.env.ENVIRONMENT === 'production',
         sameSite: 'strict',

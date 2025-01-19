@@ -96,4 +96,18 @@ export default class GamesService {
     return response.data;
   }
 
+  static async endLayout(token) {
+    const response = await axios.get(
+      `http://localhost:4000/games/end_layout/${token}`, 
+      {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    return response.data;
+  }
+
 }

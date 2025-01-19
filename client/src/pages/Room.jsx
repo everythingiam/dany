@@ -9,18 +9,46 @@ import { useFetching } from '../hooks/useFetching';
 import GamesService from '../API/GamesService';
 import useIntervalQuery from '../hooks/useIntervalQuery';
 import { useEffect, useState } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import Dany from '../assets/dany.svg';
+import Person from '../assets/person.svg';
 import UserService from '../API/UserService';
+import LayoutTip from '../components/LayoutTip';
 
 const Room = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [login, setLogin] = useState('');
+  const [show, setShow] = useState(false);
+  const [score, setScore] = useState(null);
+  const [winner, setWinner] = useState(null);
 
   const [fetchGameData, isLoading] = useFetching(async () => {
     const response = await GamesService.getGameData(params.token);
+    if (response.data.dany_wins || response.data.person_wins) {
+      setScore({
+        dany: response.data.dany_wins,
+        persons: response.data.person_wins,
+      });
+    }
+
     if (response.data.status === 'error') {
-      navigate('/');
+      setShow(true);
+      if (!score) {
+        navigate('/');
+      }
+
+      if (!winner && score.dany >= 3) {
+        setScore((prev) => ({ ...prev, dany: prev.dany + 1 }));
+        setWinner('Победа за: Дэни');
+      } else if (!winner && score.persons >= 5) {
+        setScore((prev) => ({ ...prev, persons: prev.persons + 1 }));
+        setWinner('Победа за: Личности');
+      } else if (!winner) {
+        setWinner('Стало слишком мало игроков');
+
+      }
     }
 
     setData(response.data);
@@ -37,29 +65,61 @@ const Room = () => {
     getLogin();
   }, []);
 
+  const joinRoom = async () => {
+    await GamesService.joinRoom(params.token);
+  };
+
   if (isLoading || !data) {
     return <div>Loading...</div>;
   }
+
+  const isPlayerActive =
+    data.phase_name === 'layout' && data.active_person === login;
+
+  const isGameStarted = data.phase_name !== 'waiting';
+
+  const isPlayerInGame = 
+    data.players && data.players.includes(login);
 
   return (
     <>
       <main className="game-room">
         <div className="left">
           <TopBar data={data} token={params.token} />
-          {data.phase_name !== 'waiting' && (
-            <CardsCanvas
-              data={data}
-              token={params.token}
-              login={login}
-            />
+          {isGameStarted && (
+            <CardsCanvas data={data} token={params.token} login={login} />
           )}
-          <PlayersList data={data} token={params.token} />
+          {isPlayerActive ? (
+            <LayoutTip data={data} token={params.token} fetch={fetchGameData}/>
+          ) : (
+            <PlayersList data={data} token={params.token} />
+          )}
+          {!isPlayerInGame && !isGameStarted && (
+            <button className="btn join" onClick={joinRoom}>
+              Присоединиться к игре
+            </button>
+          )}
         </div>
         <div className="right">
           <Chat data={data} token={params.token} />
-          <RoleTabs data={data} token={params.token} />
+          <RoleTabs data={data} token={params.token} fetch={fetchGameData}/>
         </div>
       </main>
+
+      <Modal show={show} onHide={() => setShow(false)}>
+        <h1>Игра окончена</h1>
+        <h1>{winner}</h1>
+        <div className="score">
+          <img src={Dany} alt="Dany" />
+          <p className="klyakson">
+            {score ? `${score.dany} : ${score.persons}` : 'Loading...'}
+          </p>
+          <img src={Person} alt="Person" />
+        </div>
+        <button className="btn" onClick={() => navigate('/')}>
+          Вернуться к списку комнат
+        </button>
+      </Modal>
     </>
   );
 };
