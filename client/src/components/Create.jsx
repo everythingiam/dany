@@ -26,7 +26,7 @@ const Create = ({ show, onHide }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const result = await GamesService.createRoom(number, speed, roomName);
-    const gameToken = result.data;
+    const gameToken = result.room_token;
     navigate(`/${gameToken}`);
   };
 

@@ -1,113 +1,61 @@
 import axios from 'axios';
 
+const API_BASE_URL = 'http://localhost:4000/games/';
+
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 export default class GamesService {
   static async getGames() {
-    const response = await axios.get('http://localhost:4000/games/', {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    return response.data;
+    return this.#request('get', '/');
   }
 
   static async getGameData(token) {
-    const response = await axios.get('http://localhost:4000/games/' + token, {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      params: {
-        token: token,
-      },
-    });
-
-    return response.data;
+    return this.#request('get', `/${token}`);
   }
 
   static async joinRoom(token) {
-    const response = await axios.get(
-      `http://localhost:4000/games/join_room/${token}`, // токен в URL
-      {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    return response.data;
+    return this.#request('get', `/join_room/${token}`);
   }
 
   static async leaveRoom(token) {
-    const response = await axios.get(
-      `http://localhost:4000/games/leave_room/${token}`, // токен в URL
-      {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    return response.data;
+    return this.#request('get', `/leave_room/${token}`);
   }
 
   static async makeDecision(token, word) {
-    const response = await axios.post(
-      `http://localhost:4000/games/make_decision/${token}`, { word }, 
-      {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    return response;
+    return this.#request('post', `/make_decision/${token}`, { word });
   }
 
   static async getPlayers(token) {
-    const response = await axios.get(
-      `http://localhost:4000/games/get_players/${token}`, 
-      {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    return response.data;
+    return this.#request('get', `/get_players/${token}`);
   }
 
   static async createRoom(number, speed, name) {
-    const response = await axios.post(
-      `http://localhost:4000/games/create_room/`, {number, speed, name}, 
-      {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    return response.data;
+    return this.#request('post', '/create_room/', { number, speed, name });
   }
 
   static async endLayout(token) {
-    const response = await axios.get(
-      `http://localhost:4000/games/end_layout/${token}`, 
-      {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    return response.data;
+    return this.#request('get', `/end_layout/${token}`);
   }
 
+  static async #request(method, url, data, params) {
+    try {
+      const config = { method, url, data, params };
+      const response = await api(config);
+
+      if (response.data.status === 'error') {
+        return response;
+      }
+      // console.log('GAEMS SERVICE', response.data);
+      return response.data.dataDB;
+    } catch (error) {
+      console.error(`Ошибка запроса:`, error);
+      return { status: 'error', message: error.message };
+    }
+  }
 }

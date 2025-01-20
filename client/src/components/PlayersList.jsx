@@ -8,7 +8,7 @@ const PlayersList = ({ data, token }) => {
 
   const [fetchUserData] = useFetching(async () => {
     const response = await GamesService.getPlayers(token);
-    setPlayers(response.data);
+    setPlayers(response.players); 
   });
 
   useEffect(() => {
@@ -17,9 +17,13 @@ const PlayersList = ({ data, token }) => {
 
   return (
     <section className="players">
-      {players.map((player) => (
-        <PlayerItem key={player.login} player={player} data={data} />
-      ))}
+      {players && players.length > 0 ? ( 
+        players.map((player) => (
+          <PlayerItem key={player.login} player={player} data={data} />
+        ))
+      ) : (
+        <p>Загрузка игроков...</p> 
+      )}
     </section>
   );
 };

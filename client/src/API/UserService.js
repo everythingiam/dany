@@ -1,84 +1,55 @@
 import axios from 'axios';
 
+const API_BASE_URL = 'http://localhost:4000/user/';
+
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 export default class UserService {
   static async postRegistration(values) {
-    const response = await axios.post(
-      'http://localhost:4000/user/registration',
-      values,
-      {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    return response.data;
+    return this.#request('post', '/registration', values);
   }
 
   static async postLogin(values) {
-    const response = await axios.post(
-      'http://localhost:4000/user/login',
-      values,
-      {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    return response.data;
+    return this.#request('post', '/login', values);
   }
 
   static async logout() {
-    const response = await axios.get('http://localhost:4000/user/logout', {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    return response.data;
+    return this.#request('get', '/logout');
   }
 
   static async check() {
-    const response = await axios.get('http://localhost:4000/user/check', {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
+    const response = await this.#request('get', '/check');
     if (response.data.status === 'success') {
       return 'user';
     } else return null;
   }
 
   static async getUserData() {
-    const response = await axios.get(
-      'http://localhost:4000/user/getuserdata',
-      {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    return response.data;
+    return this.#request('get', '/get_user_data');
+  }
+  static async updateAvatar(avatar) {
+    return this.#request('post', '/update_avatar', { avatar });
   }
 
-  static async updateAvatar(avatar) {
-    const response = await axios.post(
-      'http://localhost:4000/user/updateavatar',
-      { avatar },
-      {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+  static async #request(method, url, data, params) {
+    try {
+      const config = { method, url, data, params };
+      const response = await api(config);
+
+      if (response.data.dataDB) {
+        return response.data.dataDB;
       }
-    );
-    return response;
+      console.log('GAEMS SERVICE', response);
+      return response.data;
+    } catch (error) {
+      console.error(`Ошибка запроса:`, error);
+      return { status: 'error', message: error.message };
+    }
   }
 }

@@ -28,6 +28,7 @@ const CardsCanvas = observer(({ token, data, login }) => {
 
     return () => {
       const cleanUp = async () => {
+        if (canvasReady)
         await CanvasState.clean();
       };
       cleanUp();

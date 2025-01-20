@@ -11,7 +11,7 @@ const RoleTabs = ({ data, token, fetch }) => {
   };
 
   return (
-    <Tabs defaultIndex={2} onSelect={(index) => console.log(index)}>
+    <Tabs defaultIndex={0} onSelect={(index) => console.log(index)}>
       {data.player_role && (
         <TabList>
           <Tab>Моя роль</Tab>
@@ -29,8 +29,8 @@ const RoleTabs = ({ data, token, fetch }) => {
           )}
         </div>
       </TabPanel>
-      <TabPanel>
-        {data.player_role && (
+      {data.player_role && (
+        <TabPanel>
           <div className="words">
             <ul className="klyakson">
               {data.ingame_words.map((word, index) => (
@@ -49,8 +49,8 @@ const RoleTabs = ({ data, token, fetch }) => {
               ))}
             </ul>
           </div>
-        )}
-      </TabPanel>
+        </TabPanel>
+      )}
     </Tabs>
   );
 };

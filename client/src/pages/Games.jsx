@@ -11,7 +11,7 @@ const Games = () => {
 
   const [fetchGames, isLoading] = useFetching(async () => {
     const response = await GamesService.getGames();
-    const newGames = response.data;
+    const newGames = response.active_games;
     if (JSON.stringify(newGames) !== JSON.stringify(array)) {
       setArray(newGames);
     }

@@ -1,176 +1,58 @@
 const express = require('express');
 const router = express.Router();
 const performFunction = require('../utils/performFunction');
+const handleDB = require('../utils/handleDB');
+const handleHTTP = require('../utils/handleHTTP');
 
 class gamesController {
   async getGames(req, res) {
     const token = req.cookies.session_token;
-
-    const result = await performFunction('get_active_games', [token]);
-
-    if (result.status === 'success') {
-      return res.status(200).json({
-        data: result.data.active_games,
-      });
-    } else {
-      return res.status(400).json({
-        status: 'error',
-        message: result.message,
-      });
-    }
+    return handleHTTP(res, 'get_active_games', [token]);
   }
 
   async getGameData(req, res) {
-    const user_token = req.cookies.session_token;
-    const game_token = req.params.token;
-
-    const result = await performFunction('get_game_data', [
-      user_token,
-      game_token,
-    ]);
-
-    if (result) {
-      return res.status(200).json({
-        data: result,
-      });
-    } else {
-      return res.status(400).json({
-        status: 'error',
-        message: result.message,
-      });
-    }
+    const userToken = req.cookies.session_token;
+    const gameToken = req.params.token;
+    return handleHTTP(res, 'get_game_data', [userToken, gameToken]);
   }
 
   async joinRoom(req, res) {
-    const user_token = req.cookies.session_token;
-    const game_token = req.params.token;
-
-    const result = await performFunction('join_room', [user_token, game_token]);
-
-    if (result.status === 'success') {
-      return res.status(200).json({
-        data: result.data,
-      });
-    } else {
-      return res.status(400).json({
-        status: 'error',
-        message: result.message,
-      });
-    }
+    const userToken = req.cookies.session_token;
+    const gameToken = req.params.token;
+    return handleHTTP(res, 'join_room', [userToken, gameToken]);
   }
 
   async leaveRoom(req, res) {
-    const user_token = req.cookies.session_token;
-    const game_token = req.params.token;
-
-    const result = await performFunction('leave_room', [
-      user_token,
-      game_token,
-    ]);
-
-    if (result.status === 'success') {
-      return res.status(200).json({
-        data: result.data,
-      });
-    } else {
-      return res.status(400).json({
-        status: 'error',
-        message: result.message,
-      });
-    }
+    const userToken = req.cookies.session_token;
+    const gameToken = req.params.token;
+    return handleHTTP(res, 'leave_room', [userToken, gameToken]);
   }
 
   async makeDecision(req, res) {
-    const user_token = req.cookies.session_token;
-    const game_token = req.params.token;
+    const userToken = req.cookies.session_token;
+    const gameToken = req.params.token;
     const word = req.body.word;
-
-    const result = await performFunction('make_decision', [
-      user_token,
-      game_token,
-      word,
-    ]);
-
-    if (result.status === 'success') {
-      return res.status(200).json({
-        data: result.data,
-      });
-    } else {
-      return res.status(400).json({
-        status: 'error',
-        message: result.message,
-      });
-    }
+    return handleHTTP(res, 'make_decision', [userToken, gameToken, word]);
   }
 
   async getPlayers(req, res) {
-    const user_token = req.cookies.session_token;
-    const game_token = req.params.token;
-
-    const result = await performFunction('get_players', [
-      user_token,
-      game_token,
-    ]);
-
-    console.log(result);
-
-    if (result.status === 'success') {
-      return res.status(200).json({
-        data: result.players,
-      });
-    } else {
-      return res.status(400).json({
-        status: 'error',
-        message: result.message,
-      });
-    }
+    const userToken = req.cookies.session_token;
+    const gameToken = req.params.token;
+    return handleHTTP(res, 'get_players', [userToken, gameToken]);
   }
 
   async endLayout(req, res) {
-    const user_token = req.cookies.session_token;
-    const game_token = req.params.token;
-
-    const result = await performFunction('end_layout', [
-      user_token,
-      game_token,
-    ]);
-
-    console.log('end layput result - ', result);
-
-    if (result.status === 'success') {
-      return res.status(200).json({
-        data: result.data,
-      });
-    } else {
-      return res.status(400).json({
-        status: 'error',
-        message: result.message,
-      });
-    }
+    const userToken = req.cookies.session_token;
+    const gameToken = req.params.token;
+    const result = handleHTTP(res, 'end_layout', [userToken, gameToken]);
+    console.log(result);
+    return result;
   }
 
   async createRoom(req, res) {
-    const user_token = req.cookies.session_token;
-
-    const result = await performFunction('create_game_room', [
-      user_token,
-      req.body.name,
-      req.body.number,
-      req.body.speed,
-    ]);
-
-    console.log(result);
-
-    if (result.status === 'success') {
-      return res.status(200).json({
-        data: result.data.room_token,
-      });
-    } else {
-      return res.status(400).json({
-        status: 'error',
-        message: result.message,
-      });
-    }
+    const userToken = req.cookies.session_token;
+    const { name, number, speed } = req.body;
+    return handleHTTP(res, 'create_game_room', [userToken, name, number, speed]);
   }
 }
 

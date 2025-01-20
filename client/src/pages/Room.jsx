@@ -23,18 +23,22 @@ const Room = () => {
   const [show, setShow] = useState(false);
   const [score, setScore] = useState({ dany: 0, persons: 0 });
   const [winner, setWinner] = useState(null);
+  const [started, setStarted] = useState(false);
 
   const [fetchGameData, isLoading] = useFetching(async () => {
     const response = await GamesService.getGameData(params.token);
-    if (response.data.dany_wins || response.data.person_wins) {
+    // console.log(response);
+    if (response.dany_wins || response.person_wins) {
       setScore({
-        dany: response.data.dany_wins,
-        persons: response.data.person_wins,
+        dany: response.dany_wins,
+        persons: response.person_wins,
       });
     }
-    if (response.data.status === 'error') {
+    setStarted(true);
+
+    if (response.status === 'error') {
       setShow(true);
-      if (!score) {
+      if (!started) {
         navigate('/');
       }
 
@@ -49,7 +53,7 @@ const Room = () => {
       }
     }
 
-    setData(response.data);
+    setData(response);
   });
 
   useIntervalQuery(fetchGameData, 4000);
@@ -57,7 +61,7 @@ const Room = () => {
   useEffect(() => {
     const getLogin = async () => {
       const response = await UserService.getUserData();
-      setLogin(response.data.login);
+      setLogin(response.login);
     };
 
     getLogin();

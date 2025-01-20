@@ -20,9 +20,9 @@ const MenuLayout = () => {
 
   const [fetchUserData, isLoading] = useFetching(async () => {
     const response = await UserService.getUserData();
-    const avatarPath = `/avatars/${response.data.avatar}`;
+    const avatarPath = `/avatars/${response.avatar}`;
     setAvatar(avatarPath);
-    setName(response.data.login);
+    setName(response.login);
   });
 
   useEffect(() => {

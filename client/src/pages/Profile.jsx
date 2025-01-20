@@ -15,10 +15,10 @@ const Profile = () => {
 
   const [fetchUserData, isLoading] = useFetching(async () => {
     const response = await UserService.getUserData();
-    const avatarPath = `/avatars/${response.data.avatar}`;
+    const avatarPath = `/avatars/${response.avatar}`;
     setAvatar(avatarPath);
-    setChoosedImg(response.data.avatar);
-    setName(response.data.login);
+    setChoosedImg(response.avatar);
+    setName(response.login);
   });
 
   useEffect(() => {
@@ -35,7 +35,6 @@ const Profile = () => {
   };
 
   const handleSave = async () => {
-    // Логика сохранения
     await UserService.updateAvatar(choosedImg);
     window.location.href = '/';
   };
