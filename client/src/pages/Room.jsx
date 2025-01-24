@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useFetching } from '../hooks/useFetching';
 import GamesService from '../API/GamesService';
 import useIntervalQuery from '../hooks/useIntervalQuery';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Dany from '../assets/dany.svg';
 import Person from '../assets/person.svg';
@@ -24,6 +24,7 @@ const Room = () => {
   const [score, setScore] = useState({ dany: 0, persons: 0 });
   const [winner, setWinner] = useState(null);
   const [started, setStarted] = useState(false);
+  const socket = useRef();
 
   const [fetchGameData, isLoading] = useFetching(async () => {
     const response = await GamesService.getGameData(params.token);
@@ -62,9 +63,12 @@ const Room = () => {
     const getLogin = async () => {
       const response = await UserService.getUserData();
       setLogin(response.login);
+
     };
 
     getLogin();
+    // socket.current = new WebSocket('ws://localhost:4000/');
+
   }, []);
 
   const joinRoom = async () => {
@@ -89,6 +93,7 @@ const Room = () => {
           <TopBar data={data} token={params.token} />
           {isGameStarted && (
             <CardsCanvas data={data} token={params.token} login={login} />
+            // <div>канвасик</div>
           )}
           {isPlayerActive ? (
             <LayoutTip data={data} token={params.token} fetch={fetchGameData} />
@@ -102,7 +107,7 @@ const Room = () => {
           )}
         </div>
         <div className="right">
-          <Chat data={data} token={params.token} />
+          <Chat login={login} token={params.token} socket={socket}/>
           <RoleTabs data={data} token={params.token} fetch={fetchGameData} />
         </div>
       </main>

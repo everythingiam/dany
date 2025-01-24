@@ -6,21 +6,11 @@ const CardsCanvas = observer(({ token, data, login }) => {
   const [flag, setFlag] = useState(false);
   const [canvasReady, setCanvasReady] = useState(false);
   const canvasRef = useRef();
-
-  useEffect(() => {
-    if (data.phase_name === 'layout') {
-      setFlag(true);
-    } else if (flag) {
-      setFlag(false);
-    }
-
-    if (data.phase_name !== 'layout' && canvasReady) CanvasState.disable();
-  }, [data.phase_name]);
+  const [start, setStart] = useState(false);
 
   useEffect(() => {
     const initCanvas = async () => {
       await CanvasState.init(canvasRef.current);
-      await CanvasState.syncCards();
       setCanvasReady(true);
     };
 
@@ -33,11 +23,27 @@ const CardsCanvas = observer(({ token, data, login }) => {
       };
       cleanUp();
     };
-  }, []);
+  }, [start]);
 
   useEffect(() => {
+    if (data.phase_name === 'layout') {
+      setFlag(true);
+    } else if (flag) {
+      setFlag(false);
+    }
+
+    if (data.phase_name !== 'layout' && canvasReady) CanvasState.disable();
+
+    if (data.phase_name !== 'waiting' && !start) {
+      setStart(true);
+    }
+  }, [data.phase_name]);
+
+  useEffect(() => {
+    
     const updateCardsToCanvas = async () => {
       await CanvasState.removeAllCards();
+      console.log('карты добавляются или нет алё');
 
       const cards = data.active_cards.map(
         (card) => `/static/cards/${card.image_path}`
@@ -52,12 +58,15 @@ const CardsCanvas = observer(({ token, data, login }) => {
         if (data.active_person === login && data.phase_name === 'layout') {
           CanvasState.enable();
         }
+        setStart(false);
       }
     };
 
     if (flag) {
       updateCardsToCanvas();
     }
+    console.log(start);
+
   }, [flag]);
 
   useEffect(() => {
@@ -85,6 +94,13 @@ const CardsCanvas = observer(({ token, data, login }) => {
           break;
       }
     };
+
+    if (data.phase_name !== 'waiting' && !start) {
+      console.log(start);
+      console.log(data.phase_name);
+      setStart(true);
+      console.log(start);
+    }
   }, []);
 
   const drawHandler = (msg) => {

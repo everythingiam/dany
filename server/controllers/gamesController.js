@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const performFunction = require('../utils/performFunction');
 const handleDB = require('../utils/handleDB');
 const handleHTTP = require('../utils/handleHTTP');
 
