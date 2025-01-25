@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import GamesService from "../API/GamesService";
 
 const GameItem = ({ game }) => {
@@ -7,7 +6,7 @@ const GameItem = ({ game }) => {
   }
 
   return (
-    <Link to={`/${game.room_token}`} onClick={handleClick}>
+    <a href={`/${game.room_token}`} onClick={handleClick}>
       <div>
         <h2>{ game.room_name }</h2>
         <p>{ game.creator_login }</p>
@@ -18,7 +17,7 @@ const GameItem = ({ game }) => {
       <div>
         <p className="speed">{ game.speed }</p>
       </div>
-    </Link>
+    </a>
   )
 };
 

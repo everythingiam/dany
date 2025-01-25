@@ -11,7 +11,7 @@ const RoleTabs = ({ data, token, fetch }) => {
   };
 
   return (
-    <Tabs defaultIndex={0} onSelect={(index) => console.log(index)}>
+    <Tabs defaultIndex={1}>
       {data.player_role && (
         <TabList>
           <Tab>Моя роль</Tab>

@@ -39,6 +39,7 @@ const Room = () => {
 
     if (response.status === 'error') {
       setShow(true);
+      localStorage.clear();
       if (!started) {
         navigate('/');
       }

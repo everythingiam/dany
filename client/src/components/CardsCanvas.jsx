@@ -6,67 +6,62 @@ const CardsCanvas = observer(({ token, data, login }) => {
   const [flag, setFlag] = useState(false);
   const [canvasReady, setCanvasReady] = useState(false);
   const canvasRef = useRef();
-  const [start, setStart] = useState(false);
 
   useEffect(() => {
     const initCanvas = async () => {
       await CanvasState.init(canvasRef.current);
+      await sync();
+
       setCanvasReady(true);
     };
+    let timeout;
+
+    const updateFlag = () => {
+      if (data.decided_word != null) {
+        setFlag(false);
+      }
+    };
+
+    timeout = setTimeout(() => updateFlag(), 200);
 
     initCanvas();
 
     return () => {
-      const cleanUp = async () => {
-        if (canvasReady)
-        await CanvasState.clean();
-      };
-      cleanUp();
+      CanvasState.clean();
+      clearTimeout(timeout);
     };
-  }, [start]);
+  }, []);
 
   useEffect(() => {
+    let timeout;
+
     if (data.phase_name === 'layout') {
-      setFlag(true);
+      timeout = setTimeout(() => setFlag(true), 100);
     } else if (flag) {
-      setFlag(false);
+      timeout = setTimeout(() => setFlag(false), 100);
     }
 
-    if (data.phase_name !== 'layout' && canvasReady) CanvasState.disable();
-
-    if (data.phase_name !== 'waiting' && !start) {
-      setStart(true);
+    if (data.phase_name !== 'layout' && canvasReady) {
+      CanvasState.disable();
     }
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [data.phase_name]);
 
   useEffect(() => {
-    
-    const updateCardsToCanvas = async () => {
-      await CanvasState.removeAllCards();
-      console.log('карты добавляются или нет алё');
-
-      const cards = data.active_cards.map(
-        (card) => `/static/cards/${card.image_path}`
-      );
-
-      for (const src of cards) {
-        await CanvasState.addCard(src);
-      }
-
-      if (canvasReady) {
-        CanvasState.disable();
-        if (data.active_person === login && data.phase_name === 'layout') {
-          CanvasState.enable();
-        }
-        setStart(false);
+    let timeout;
+    const update = async () => {
+      if (flag) {
+        setFlag(false);
+        await updateCardsToCanvas();
       }
     };
-
-    if (flag) {
-      updateCardsToCanvas();
-    }
-    console.log(start);
-
+    timeout = setTimeout(() => update(), 200);
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [flag]);
 
   useEffect(() => {
@@ -84,29 +79,63 @@ const CardsCanvas = observer(({ token, data, login }) => {
     };
 
     socket.onmessage = (event) => {
-      let msg = JSON.parse(event.data);
-      switch (msg.method) {
-        case 'connection':
-          console.log('пользователь присоединился');
-          break;
-        case 'draw':
-          drawHandler(msg);
-          break;
+      const msg = JSON.parse(event.data);
+      if (msg.method === 'draw') {
+        drawHandler(msg);
       }
     };
 
-    if (data.phase_name !== 'waiting' && !start) {
-      console.log(start);
-      console.log(data.phase_name);
-      setStart(true);
-      console.log(start);
-    }
-  }, []);
+    return () => {
+      socket.close();
+    };
+  }, [token]);
 
   const drawHandler = (msg) => {
-    const coords = msg.coords;
-    CanvasState.setCard(coords);
+    CanvasState.setCard(msg.coords);
   };
+
+  const updateCardsToCanvas = async () => {
+    await CanvasState.removeAllCards();
+
+    const cardPaths = data.active_cards.map(
+      (card) => `/static/cards/${card.image_path}`
+    );
+
+    for (const src of cardPaths) {
+      await CanvasState.addCard(src);
+    }
+
+    if (data.active_person === login && data.phase_name === 'layout') {
+      CanvasState.enable();
+    } else {
+      CanvasState.disable();
+    }
+  };
+
+  const sync = async () => {
+    await CanvasState.syncCards();
+
+    if (data.active_person === login && data.phase_name === 'layout') {
+      CanvasState.enable();
+    } else {
+      CanvasState.disable();
+    }
+  }
+
+  useEffect(() => {
+    if (canvasRef.current && data.active_person === login) {
+      const canvas = canvasRef.current;
+  
+      canvas.style.transition = 'opacity 0.5s';
+      canvas.style.opacity = 0.4;
+    
+      const timeout = setTimeout(() => {
+        canvas.style.opacity = 1;
+      }, 2000);
+  
+      return () => clearTimeout(timeout);
+    }
+  }, [flag]);
 
   return <canvas width="750" height="370" ref={canvasRef} />;
 });

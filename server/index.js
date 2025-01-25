@@ -24,6 +24,9 @@ app.ws('/', (ws, req) => {
       case 'message':
         broadcastConnection(ws, msg);
         break;
+      case 'startGame':
+        broadcastConnection(ws, msg);
+        break;
     }
   });
 });

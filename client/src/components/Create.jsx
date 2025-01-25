@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import { useNavigate } from 'react-router-dom';
 import GamesService from '../API/GamesService';
 
 const Create = ({ show, onHide }) => {
-  const navigate = useNavigate();
   const [speed, setSpeed] = useState('slow');
   const [number, setNumber] = useState(3);
   const [roomName, setRoomName] = useState('Комнатка');
@@ -27,7 +25,7 @@ const Create = ({ show, onHide }) => {
     event.preventDefault();
     const result = await GamesService.createRoom(number, speed, roomName);
     const gameToken = result.room_token;
-    navigate(`/${gameToken}`);
+    window.location.href = `/${gameToken}`
   };
 
   const handleChooseSpeed = (speedValue, event) => {

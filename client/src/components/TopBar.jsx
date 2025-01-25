@@ -55,6 +55,7 @@ const TopBar = ({ data, token }) => {
   const handleLeave = async () => {
     navigate('/');
     await GamesService.leaveRoom(token);
+    localStorage.clear();
   };
 
   return (

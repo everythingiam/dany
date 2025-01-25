@@ -31,7 +31,7 @@ class CanvasState {
       return;
     }
 
-    console.log('adding card:', src);
+    // console.log('adding card:', src);
 
     const card = await new CardItem(src, id);
     this.canvas.add(card);
@@ -66,16 +66,30 @@ class CanvasState {
 
   async syncCards() {
     const storedCards = JSON.parse(localStorage.getItem('canvasCards')) || [];
-
-    storedCards.forEach(async (cardData) => {
-      const card = await new CardItem(cardData.frontImage);
-
-      this.canvas.add(card);
-      this.#setCoordsOnCard(card, cardData);
-    });
-
+    console.log('sync Cards');
+  
+    for (const cardData of storedCards) {
+      const existingCard = this.canvas.getObjects().find(
+        (obj) => obj.name === cardData.frontImage
+      );
+  
+      if (existingCard) {
+        console.log(`Updating position for card: ${cardData.frontImage}`);
+        existingCard.set({
+          left: cardData.left,
+          top: cardData.top,
+          angle: cardData.angle || 0,
+        });
+      } else {
+        const card = await new CardItem(cardData.frontImage);
+        this.canvas.add(card);
+        this.#setCoordsOnCard(card, cardData);
+      }
+    }
+  
     this.canvas.renderAll();
   }
+  
 
   async removeAllCards() {
     if (!this.canvas) return;
@@ -96,11 +110,9 @@ class CanvasState {
       o.selectable = false;
       o.evented = false;
     });
-    this.canvas.selection = false;
   }
 
   enable() {
-    this.canvas.selection = true;
     this.canvas.forEachObject(function (o) {
       o.selectable = true;
       o.evented = true;
@@ -184,8 +196,10 @@ class CanvasState {
     if (card.isFlipped !== coords.isFlipped) {
       this.#replaceImage(card);
     }
+    console.log('set card index', coords.zIndex);
 
     const currentZIndex = this.canvas.getObjects().indexOf(card);
+    console.log('this.canvas.getObjects().indexOf(card) - ', currentZIndex);
     if (currentZIndex < coords.zIndex) {
       for (let i = currentZIndex; i < coords.zIndex; i++) {
         this.#bringForward(card);
@@ -211,6 +225,8 @@ class CanvasState {
       console.warn('WebSocket is not ready. Skipping send.');
       return;
     }
+
+    console.log('send card index', zIndex);
 
     this.socket.send(
       JSON.stringify({
