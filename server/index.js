@@ -67,6 +67,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
+      domain: '.vercel.app',
       httpOnly: true,
       secure: process.env.ENVIRONMENT === 'production',
       sameSite: 'none', 
