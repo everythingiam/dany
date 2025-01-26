@@ -44,6 +44,11 @@ const broadcastConnection = (ws, msg) => {
   });
 };
 
+const allowedOrigins = [
+  `http://localhost:${process.env.CLIENT_PORT || 5173}`,
+  'https://dany.vercel.com',
+];
+
 app.use(helmet());
 app.use(
   cors({
@@ -63,7 +68,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: process.env.ENVIRONMENT === 'production',
+      sameSite: 'none', 
       maxAge: 7 * 24 * 60 * 60 * 1000, // 1 неделя
     },
   })

@@ -30,6 +30,41 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+create or replace function get_user_data(user_token TEXT)
+RETURNS JSON AS $$
+DECLARE
+    user_login TEXT;
+	user_avatar TEXT;
+BEGIN
+    -- Проверяем, существует ли токен в таблице user_tokens
+    SELECT login
+    INTO user_login
+    FROM user_tokens
+    WHERE token = user_token;
+
+    -- Если логин не найден, возвращаем сообщение об ошибке
+    IF user_login IS NULL THEN
+        RETURN json_build_object(
+            'status', 'error',
+            'message', 'Invalid token or user not found.'
+        );
+    END IF;
+
+     -- Получаем значение avatar из таблицы users
+    SELECT avatar
+    INTO user_avatar
+    FROM users
+    WHERE login = user_login;
+
+    -- Возвращаем успешное сообщение с логином и аватаром
+    RETURN json_build_object(
+        'status', 'success',
+        'login', user_login,
+        'avatar', user_avatar
+    );
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION get_players(p_user_token TEXT, p_room_token TEXT)
 RETURNS JSON AS $$
 DECLARE

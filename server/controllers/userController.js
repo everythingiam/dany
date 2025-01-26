@@ -12,15 +12,15 @@ class userController {
       res.cookie('session_token', result.token, {
         httpOnly: true,
         secure: process.env.ENVIRONMENT === 'production',
-        sameSite: 'strict',
-        maxAge: 3 * 24 * 60 * 60 * 1000, // 3 дня
+        sameSite: 'none',
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7
       });
 
       res.cookie('login', nickname, {
         httpOnly: true,
         secure: process.env.ENVIRONMENT === 'production',
-        sameSite: 'strict',
-        maxAge: 3 * 24 * 60 * 60 * 1000, // 3 дня
+        sameSite: 'none',
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7
       });
 
       return res.status(200).json({
@@ -45,15 +45,15 @@ class userController {
       res.cookie('session_token', result.token, {
         httpOnly: true,
         secure: process.env.ENVIRONMENT === 'production',
-        sameSite: 'strict',
-        maxAge: 3 * 24 * 60 * 60 * 1000, // 3 дня
+        sameSite: 'none',
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7
       });
 
       res.cookie('login', nickname, {
         httpOnly: true,
         secure: process.env.ENVIRONMENT === 'production',
-        sameSite: 'strict',
-        maxAge: 3 * 24 * 60 * 60 * 1000, // 3 дня
+        sameSite: 'none',
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7
       });
 
       return res.status(200).json({
@@ -77,12 +77,12 @@ class userController {
       res.clearCookie('session_token', {
         httpOnly: true,
         secure: process.env.ENVIRONMENT === 'production',
-        sameSite: 'strict',
+        sameSite: 'none',
       });
       res.clearCookie('login', {
         httpOnly: true,
         secure: process.env.ENVIRONMENT === 'production',
-        sameSite: 'strict',
+        sameSite: 'none',
       });
 
       return res.status(200).json({
