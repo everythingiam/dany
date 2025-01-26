@@ -8,7 +8,6 @@ const aWss = WSServer.getWss();
 const helmet = require('helmet');
 const userRouter = require('./routers/userRouter');
 const gamesRouter = require('./routers/gamesRouter');
-const server = require('http').createServer(app);
 require('dotenv').config();
 
 app.ws('/', (ws, req) => {
@@ -49,7 +48,7 @@ const allowedOrigins = [
   'https://danygame.vercel.app',
 ];
 
-app.use(helmet());
+// app.use(helmet());
 app.use(
   cors({
     origin: 'https://danygame.vercel.app',
@@ -76,6 +75,7 @@ app.use(
   })
 );
 
-app.listen(process.env.SERVER_PORT || 4000, () => {
-  console.log('Server is listening on port 4000');
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is listening on port ${PORT}`);
 });
