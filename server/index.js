@@ -1,15 +1,14 @@
 const express = require('express');
 const app = express();
-const http = require('http');
 const session = require('express-session');
-const server = http.createServer(app);
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const expressWs = require('express-ws')(app, server);
-const aWss = expressWs.getWss();
+const WSServer = require('express-ws')(app);
+const aWss = WSServer.getWss();
 const helmet = require('helmet');
 const userRouter = require('./routers/userRouter');
 const gamesRouter = require('./routers/gamesRouter');
+const server = require('http').createServer(app);
 require('dotenv').config();
 
 app.ws('/', (ws, req) => {
@@ -50,7 +49,7 @@ const allowedOrigins = [
   'https://danygame.vercel.app',
 ];
 
-// app.use(helmet());
+app.use(helmet());
 app.use(
   cors({
     origin: 'https://danygame.vercel.app',
@@ -77,7 +76,6 @@ app.use(
   })
 );
 
-const PORT = process.env.PORT || 4000;
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server is listening on port ${PORT}`);
+app.listen(process.env.SERVER_PORT || 4000, () => {
+  console.log('Server is listening on port 4000');
 });
