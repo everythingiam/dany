@@ -51,7 +51,6 @@ export default class UserService {
       if (response.data.dataDB) {
         return response.data.dataDB;
       }
-      console.log('GAEMS SERVICE', response);
       return response.data;
     } catch (error) {
       console.error(`Ошибка запроса:`, error);
