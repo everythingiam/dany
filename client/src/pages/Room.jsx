@@ -24,7 +24,7 @@ const Room = () => {
   const [score, setScore] = useState({ dany: 0, persons: 0 });
   const [winner, setWinner] = useState(null);
   const [started, setStarted] = useState(false);
-  const socket = useRef();
+  const [socket, setSocket] = useState(null);
 
   const [fetchGameData, isLoading] = useFetching(async () => {
     const response = await GamesService.getGameData(params.token);
@@ -61,15 +61,15 @@ const Room = () => {
   useIntervalQuery(fetchGameData, 4000);
 
   useEffect(() => {
+    // setSocket(new WebSocket('ws://localhost:4000/'));
     const getLogin = async () => {
-      const response = await UserService.getUserData();
+      const response = await UserService.getLoginCookie();
+      console.log('login ', response);
       setLogin(response.login);
-
     };
 
     getLogin();
     // socket.current = new WebSocket('ws://localhost:4000/');
-
   }, []);
 
   const joinRoom = async () => {
@@ -93,7 +93,12 @@ const Room = () => {
         <div className="left">
           <TopBar data={data} token={params.token} />
           {isGameStarted && (
-            <CardsCanvas data={data} token={params.token} login={login} />
+            <CardsCanvas
+              data={data}
+              token={params.token}
+              login={login}
+              socket={socket}
+            />
             // <div>канвасик</div>
           )}
           {isPlayerActive ? (
@@ -102,13 +107,24 @@ const Room = () => {
             <PlayersList data={data} token={params.token} />
           )}
           {!isPlayerInGame && !isGameStarted && (
-            <button className="btn join" onClick={joinRoom}>
+            <button
+              className="btn join"
+              onClick={async () => {
+                await joinRoom();
+                await fetchGameData();
+              }}
+            >
               Присоединиться к игре
             </button>
           )}
         </div>
         <div className="right">
-          <Chat login={login} token={params.token} socket={socket}/>
+          <Chat
+            data={data}
+            login={login}
+            token={params.token}
+            socket={socket}
+          />
           <RoleTabs data={data} token={params.token} fetch={fetchGameData} />
         </div>
       </main>

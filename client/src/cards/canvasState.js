@@ -110,6 +110,7 @@ class CanvasState {
       o.selectable = false;
       o.evented = false;
     });
+    this.#removeEventHandlers();
   }
 
   enable() {
@@ -117,6 +118,7 @@ class CanvasState {
       o.selectable = true;
       o.evented = true;
     });
+    this.#listen();
   }
 
   #listen() {
@@ -299,13 +301,11 @@ class CanvasState {
   }
 
   #removeEventHandlers() {
-    this.canvas.off('mouse:wheel', this.handleWheel);
-    this.canvas.off('object:modified', this.handleObjectModified);
-    this.canvas.off('object:selected', this.handleObjectSelected);
+    this.canvas.off('mouse:wheel', this.#handleWheel);
+    this.canvas.off('object:modified', this.#handleObjectModified);
+    this.canvas.off('object:selected', this.#handleObjectSelected);
 
-    window.removeEventListener('keydown', this.handleKeyPress);
-
-    this.canvas = null;
+    window.removeEventListener('keydown', this.#handleKeyPress);
   }
 }
 

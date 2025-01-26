@@ -69,6 +69,10 @@ p {
   &:hover {
     background-color: $black_hover;
   }
+
+  &:disabled {
+    opacity: 0.5;
+  }
 }
 .white {
   background-color: $white;

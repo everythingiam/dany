@@ -33,8 +33,13 @@ export default class UserService {
   static async getUserData() {
     return this.#request('get', '/get_user_data');
   }
+
   static async updateAvatar(avatar) {
     return this.#request('post', '/update_avatar', { avatar });
+  }
+
+  static async getLoginCookie() {
+    return this.#request('get', `/get_login_cookie/`);
   }
 
   static async #request(method, url, data, params) {

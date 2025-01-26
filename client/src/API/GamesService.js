@@ -42,7 +42,7 @@ export default class GamesService {
   static async endLayout(token) {
     return this.#request('get', `/end_layout/${token}`);
   }
-
+  
   static async #request(method, url, data, params) {
     try {
       const config = { method, url, data, params };
@@ -51,7 +51,7 @@ export default class GamesService {
       if (response.data.status === 'error') {
         return response;
       }
-      // console.log('GAEMS SERVICE', response.data);
+
       return response.data.dataDB;
     } catch (error) {
       console.error(`Ошибка запроса:`, error);

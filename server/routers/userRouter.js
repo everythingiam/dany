@@ -9,5 +9,6 @@ router.post('/update_avatar', userController.updateAvatar);
 router.get('/logout', userController.logout);
 router.get('/check', userController.check);
 router.get('/get_user_data', userController.getUserData);
+router.get('/get_login_cookie', userController.getLoginCookie);
 
 module.exports = router;

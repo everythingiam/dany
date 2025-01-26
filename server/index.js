@@ -18,13 +18,13 @@ app.ws('/', (ws, req) => {
       case 'connection':
         connectionHandler(ws, msg);
         break;
+      case 'chatConnection':
+        connectionHandler(ws, msg);
+        break;
       case 'draw':
         broadcastConnection(ws, msg);
         break;
       case 'message':
-        broadcastConnection(ws, msg);
-        break;
-      case 'startGame':
         broadcastConnection(ws, msg);
         break;
     }

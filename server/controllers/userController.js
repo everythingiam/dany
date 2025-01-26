@@ -59,7 +59,7 @@ class userController {
       return res.status(200).json({
         status: 'success',
         message: `User ${nickname} logged`,
-        dataDB: 'logged'
+        dataDB: 'logged',
       });
     } else {
       return res.status(400).json({
@@ -74,7 +74,6 @@ class userController {
 
     const result = await handleDB('logout_user', [token]);
     if (result.status === 'success') {
-
       res.clearCookie('session_token', {
         httpOnly: true,
         secure: process.env.ENVIRONMENT === 'production',
@@ -117,6 +116,15 @@ class userController {
       [token, avatar],
       'Avatar updated'
     );
+  }
+
+  async getLoginCookie(req, res) {
+    const login = req.cookies.login;
+    res.status(200).json({
+      status: 'success',
+      message: 'Operation successful',
+      login: login
+    });
   }
 }
 
