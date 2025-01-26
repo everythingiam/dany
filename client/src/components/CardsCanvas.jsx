@@ -65,7 +65,7 @@ const CardsCanvas = observer(({ token, data, login }) => {
   }, [flag]);
 
   useEffect(() => {
-    const socket = new WebSocket('https://dany-production-api.up.railway.app/');
+    const socket = new WebSocket('wss://dany-production-api.up.railway.app/');
     CanvasState.setSocket(socket);
     CanvasState.setSessionId(token);
 
