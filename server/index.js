@@ -46,13 +46,13 @@ const broadcastConnection = (ws, msg) => {
 
 const allowedOrigins = [
   `http://localhost:${process.env.CLIENT_PORT || 5173}`,
-  'https://danygame.vercel.com',
+  'https://danygame.vercel.app',
 ];
 
 app.use(helmet());
 app.use(
   cors({
-    origin: 'https://danygame.vercel.com',
+    origin: 'https://danygame.vercel.app',
     credentials: true,
     methods: ['GET', 'POST', 'OPTIONS'],
   })
