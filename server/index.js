@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
+const http = require('http');
 const session = require('express-session');
+const server = http.createServer(app);
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const WSServer = require('express-ws')(app);
-const aWss = WSServer.getWss();
+const expressWs = require('express-ws')(app, server);
+const aWss = expressWs.getWss();
 const helmet = require('helmet');
 const userRouter = require('./routers/userRouter');
 const gamesRouter = require('./routers/gamesRouter');
@@ -76,6 +78,6 @@ app.use(
 );
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, '0.0.0.0', () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is listening on port ${PORT}`);
 });
