@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import * as fabric from 'fabric';
-import { CardItem } from './CardItem';
+import { CardItem } from './cardItem';
 
 class CanvasState {
   canvas = null;
