@@ -8,8 +8,8 @@ import { useAuth } from '../hooks/useAuth';
 const Login = () => {
   const { signin } = useAuth();
 
-  const onSubmit = async (values, actions, e) => {
-    e.preventDefault();
+  const onSubmit = async (values, actions, event) => {
+    event.preventDefault();
     const vals = { ...values };
     actions.resetForm();
     const response = await UserService.postLogin(vals);
@@ -37,7 +37,7 @@ const Login = () => {
         или {'\u00A0'}
         <Link to="/registration">создать аккаунт</Link>
       </p>
-      <form action="" onSubmit={(e) => handleSubmit(e)}>
+      <form action="" onSubmit={(event) => handleSubmit(event)}>
         <ul>
           <li>
             <input
