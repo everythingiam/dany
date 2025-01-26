@@ -1,8 +1,8 @@
 import { useRef, useEffect, useState } from 'react';
-import CanvasState from '../cards/CanvasState';
+import CanvasState from '../cards/canvasState';
 import { observer } from 'mobx-react-lite';
 
-const CardsCanvas = observer(({ token, data, login, socket }) => {
+const CardsCanvas = observer(({ token, data, login }) => {
   const [flag, setFlag] = useState(false);
   const [canvasReady, setCanvasReady] = useState(false);
   const canvasRef = useRef();
@@ -65,7 +65,7 @@ const CardsCanvas = observer(({ token, data, login, socket }) => {
   }, [flag]);
 
   useEffect(() => {
-    const socket = new WebSocket('ws://localhost:4000/');
+    const socket = new WebSocket('wss://dany-production-api.up.railway.app/');
     CanvasState.setSocket(socket);
     CanvasState.setSessionId(token);
 

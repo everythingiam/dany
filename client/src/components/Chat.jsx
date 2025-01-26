@@ -7,7 +7,7 @@ const Chat = ({ token, login, data }) => {
   const messagesEndRef = useRef(); 
 
   useEffect(() => {
-    socket.current = new WebSocket('ws://localhost:4000/');
+    const socket = new WebSocket('wss://dany-production-api.up.railway.app/');
 
     socket.current.onopen = () => {
       socket.current.send(
