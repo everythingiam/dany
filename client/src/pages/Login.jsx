@@ -8,12 +8,14 @@ import { useAuth } from '../hooks/useAuth';
 const Login = () => {
   const { signin } = useAuth();
 
-  const onSubmit = async (values, actions) => {
+  const onSubmit = async (values, actions, e) => {
+    e.preventDefault();
     const vals = { ...values };
     actions.resetForm();
     const response = await UserService.postLogin(vals);
     if (response) {
-    signin(values.nickname, () => window.location.href = '/');
+      // signin(values.nickname, () => window.location.href = '/');
+      signin(values.nickname, () => {});
     }
   };
 
@@ -35,7 +37,7 @@ const Login = () => {
         или {'\u00A0'}
         <Link to="/registration">создать аккаунт</Link>
       </p>
-      <form action="" onSubmit={handleSubmit}>
+      <form action="" onSubmit={(e) => handleSubmit(e)}>
         <ul>
           <li>
             <input
