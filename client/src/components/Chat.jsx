@@ -3,11 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 const Chat = ({ token, login, data }) => {
   const [messages, setMessages] = useState([]);
   const [value, setValue] = useState('');
-  const socket = useRef();
+  const socket = useRef(null); 
   const messagesEndRef = useRef(); 
 
   useEffect(() => {
-    const socket = new WebSocket('wss://dany-production-api.up.railway.app/');
+    socket.current = new WebSocket('wss://dany-production-api.up.railway.app/');
 
     socket.current.onopen = () => {
       socket.current.send(
@@ -25,44 +25,56 @@ const Chat = ({ token, login, data }) => {
     };
 
     return () => {
-      socket.current.close();
+      if (socket.current) {
+        socket.current.close();
+      }
     };
-  }, []);
+  }, [token, login]);
 
   useEffect(() => {
-    let messg = '';
-    console.log(data);
+    let systemMessage = '';
+
     switch (data.phase_name) {
       case 'layout': {
         const word = data.decided_word;
-        if (word === null) messg = `${data.active_person} изображает слово`;
-        else if (word === 'missed')
-          messg = `Решения не было! ${data.active_person} изображает слово`;
-        else
-          messg = `Было выбрано слово '${word}'. ${data.active_person} изображает слово`;
+        if (word === null) {
+          systemMessage = `${data.active_person} изображает слово`;
+        } else if (word === 'missed') {
+          systemMessage = `Решения не было! ${data.active_person} изображает слово`;
+        } else {
+          systemMessage = `Было выбрано слово '${word}'. ${data.active_person} изображает слово`;
+        }
         break;
       }
       case 'discussion':
-        messg = `${data.active_person} изобразил слово. Обсуждайте! Решение за ${data.decisive_person}`;
+        systemMessage = `${data.active_person} изобразил слово. Обсуждайте! Решение за ${data.decisive_person}`;
         break;
       case 'decision':
-        messg = `${data.decisive_person} решает...`;
+        systemMessage = `${data.decisive_person} решает...`;
         break;
       case 'waiting':
-        messg = `Комната создана!`;
+        systemMessage = `Комната создана!`;
+        break;
+      default:
         break;
     }
 
-    if (data) {
+    if (systemMessage) {
       const phaseMessage = {
         login: 'Система',
-        message: messg,
+        message: systemMessage,
         id: token,
         method: 'message',
       };
       setMessages((prev) => [...prev, phaseMessage]);
     }
-  }, [data.phase_name]);
+  }, [
+    data.phase_name,
+    data.decided_word,
+    data.active_person,
+    data.decisive_person,
+    token,
+  ]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -70,6 +82,8 @@ const Chat = ({ token, login, data }) => {
 
   const sendMessage = async (event) => {
     event.preventDefault();
+    if (!socket.current) return; 
+
     const message = {
       login,
       message: value,
@@ -113,7 +127,7 @@ const Chat = ({ token, login, data }) => {
               </div>
             );
           })}
-          <div ref={messagesEndRef} /> 
+          <div ref={messagesEndRef} />
         </div>
 
         <form>

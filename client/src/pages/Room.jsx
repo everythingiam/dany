@@ -119,7 +119,12 @@ const Room = () => {
           )}
         </div>
         <div className="right">
-
+          <Chat
+            data={data}
+            login={login}
+            token={params.token}
+            socket={socket}
+          />
           <RoleTabs data={data} token={params.token} fetch={fetchGameData} />
         </div>
       </main>
