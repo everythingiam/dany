@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:4000/games/';
+const API_BASE_URL = 'https://dany-production-api.up.railway.app/games/';
 
 const api = axios.create({
   baseURL: API_BASE_URL,

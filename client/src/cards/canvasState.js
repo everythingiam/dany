@@ -66,15 +66,13 @@ class CanvasState {
 
   async syncCards() {
     const storedCards = JSON.parse(localStorage.getItem('canvasCards')) || [];
-    console.log('sync Cards');
-  
+
     for (const cardData of storedCards) {
-      const existingCard = this.canvas.getObjects().find(
-        (obj) => obj.name === cardData.frontImage
-      );
-  
+      const existingCard = this.canvas
+        .getObjects()
+        .find((obj) => obj.name === cardData.frontImage);
+
       if (existingCard) {
-        console.log(`Updating position for card: ${cardData.frontImage}`);
         existingCard.set({
           left: cardData.left,
           top: cardData.top,
@@ -86,10 +84,9 @@ class CanvasState {
         this.#setCoordsOnCard(card, cardData);
       }
     }
-  
+
     this.canvas.renderAll();
   }
-  
 
   async removeAllCards() {
     if (!this.canvas) return;
@@ -198,18 +195,20 @@ class CanvasState {
     if (card.isFlipped !== coords.isFlipped) {
       this.#replaceImage(card);
     }
-    console.log('set card index', coords.zIndex);
 
     const currentZIndex = this.canvas.getObjects().indexOf(card);
-    console.log('this.canvas.getObjects().indexOf(card) - ', currentZIndex);
-    if (currentZIndex < coords.zIndex) {
-      for (let i = currentZIndex; i < coords.zIndex; i++) {
+    if (coords.zIndex > currentZIndex) {
+      for (let i = coords.zIndex; i > currentZIndex; i--) {
         this.#bringForward(card);
       }
-    } else if (currentZIndex > coords.zIndex) {
-      for (let i = currentZIndex; i > coords.zIndex; i--) {
+    }
+    if (coords.zIndex < currentZIndex) {
+      for (let i = coords.zIndex; i < currentZIndex; i++) {
         this.#sendBackward(card);
       }
+    }
+    if (coords.zIndex === currentZIndex) {
+      return;
     }
   }
 
@@ -227,8 +226,6 @@ class CanvasState {
       console.warn('WebSocket is not ready. Skipping send.');
       return;
     }
-
-    console.log('send card index', zIndex);
 
     this.socket.send(
       JSON.stringify({
@@ -292,6 +289,7 @@ class CanvasState {
   #sendBackward(activeObject) {
     if (activeObject) {
       this.canvas.sendObjectBackwards(activeObject, true);
+      // this.canvas.sendObjectToBack(activeObject, true);
       this.canvas.renderAll();
     }
   }
