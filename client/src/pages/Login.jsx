@@ -4,16 +4,21 @@ import { useFormik } from 'formik';
 import { formSchema } from '../utils/schemas';
 import UserService from '../API/UserService';
 import { useAuth } from '../hooks/useAuth';
+import Modal from 'react-bootstrap/Modal';
+import { useState } from 'react';
 
 const Login = () => {
   const { signin } = useAuth();
+  const [show, setShow] = useState(false);
 
   const onSubmit = async (values, actions) => {
     const vals = { ...values };
     actions.resetForm();
     const response = await UserService.postLogin(vals);
-    if (response) {
+    if (response.status !== 'error') {
       signin(values.nickname, () => window.location.href = '/');
+    } else {
+      setShow(true);
     }
   };
 
@@ -35,7 +40,7 @@ const Login = () => {
         или {'\u00A0'}
         <Link to="/registration">создать аккаунт</Link>
       </p>
-      <form action="" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <ul>
           <li>
             <input
@@ -77,6 +82,16 @@ const Login = () => {
         </ul>
       </form>
       <Link to="/recovery">Забыли пароль?</Link>
+      <Modal show={show} onHide={() => setShow(false)}>
+        <Modal.Header closeButton>
+        </Modal.Header>
+        <Modal.Body>Неверный логин или пароль!</Modal.Body>
+        <Modal.Footer>
+          <button onClick={() => setShow(false)} className="btn">
+            Закрыть
+          </button>
+        </Modal.Footer>
+      </Modal>
     </section>
   );
 };

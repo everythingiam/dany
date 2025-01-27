@@ -1,22 +1,25 @@
 import Person from '../assets/person.svg';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { useFormik } from 'formik';
 import { formSchema } from '../utils/schemas';
 import UserService from '../API/UserService';
+import Modal from 'react-bootstrap/Modal';
 import { useAuth } from '../hooks/useAuth';
 
 const Registration = () => {
   const {signin} = useAuth();
+  const [show, setShow] = useState(false);
 
   const onSubmit = async (values, actions) => {
-    const vals = { ...values };
-    actions.resetForm();
-
-    const response = await UserService.postRegistration(vals);
-
-    if (response) {
-      signin(values.nickname, () => window.location.href = '/profile');
-    }
+     const vals = { ...values };
+        actions.resetForm();
+        const response = await UserService.postRegistration(vals);
+        if (response.status !== 'error') {
+          signin(values.nickname, () => window.location.href = '/profile');
+        } else {
+          setShow(true);
+        }
   };
 
   const { values, touched, isSubmitting, handleChange, handleSubmit, errors } =
@@ -78,6 +81,16 @@ const Registration = () => {
           </li>
         </ul>
       </form>
+      <Modal show={show} onHide={() => setShow(false)}>
+        <Modal.Header closeButton>
+        </Modal.Header>
+        <Modal.Body>Такой пользователь уже существует!</Modal.Body>
+        <Modal.Footer>
+          <button onClick={() => setShow(false)} className="btn">
+            Закрыть
+          </button>
+        </Modal.Footer>
+      </Modal>
     </section>
   );
 };

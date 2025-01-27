@@ -73,7 +73,7 @@ const TopBar = ({ data, token }) => {
       </div>
       <div className="phase">
         <p className="klyakson">{phase_name}</p>
-        <p className="klyakson">{formatTime(remainingTime)}</p>
+        <p className="klyakson">{data.phase_name !=='waiting' && formatTime(remainingTime)}</p>
       </div>
       <RulesModal show={rulesShow} onHide={() => setRulesShow(false)}/>
     </section>
