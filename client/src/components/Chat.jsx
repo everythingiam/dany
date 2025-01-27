@@ -40,9 +40,9 @@ const Chat = ({ token, login, data }) => {
         if (word === null) {
           systemMessage = `${data.active_person} изображает слово`;
         } else if (word === 'missed') {
-          systemMessage = `Решения не было! ${data.active_person} изображает слово`;
+          systemMessage = `Решения не было! Правильным словом было '${data.prev_active_word}'. ${data.active_person} изображает слово`;
         } else {
-          systemMessage = `Было выбрано слово '${word}'. ${data.active_person} изображает слово`;
+          systemMessage = `Было выбрано слово '${word}'. Правильным словом было '${data.prev_active_word}'. ${data.active_person} изображает слово`;
         }
         break;
       }

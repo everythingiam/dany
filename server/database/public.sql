@@ -1289,6 +1289,13 @@ RETURN (
             WHERE p.room_token = gr.room_token
             LIMIT 1
         ),
+        'prev_active_word', (
+                SELECT active_word
+                FROM active_word_history
+                WHERE room_token = gr.room_token
+                ORDER BY round_start DESC
+                LIMIT 1 OFFSET 1  
+            ),
         'decisive_person', (
             SELECT p.login
             FROM active_people ap

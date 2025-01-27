@@ -661,63 +661,17 @@ CREATE OR REPLACE FUNCTION _pick_active_words(
     p_room_token TEXT, 
     p_mode TEXT
 ) RETURNS JSON AS $$
-DECLARE
-    selected_word VARCHAR;
-    ingame_words TEXT[];
-    remaining_words_count INT;
-BEGIN
-    IF p_mode = 'next' THEN
-        -- Удаляем предыдущие слова раунда
-        DELETE FROM Words_in_game
-        WHERE room_token = p_room_token
-          AND (status = 'active' OR status = 'ingame');
-    
-        -- Проверяем, есть ли достаточно слов
-        SELECT COUNT(*) INTO remaining_words_count
-        FROM Words_in_game
-        WHERE room_token = p_room_token
-          AND status = 'empty';
-    
-        IF remaining_words_count < 5 THEN
-            -- Заполняем недостаток слов
-            PERFORM _fill_words(p_room_token);
-        END IF;
-    END IF;
-
-    -- Рандомно выбираем 5 слов для статуса 'ingame'
-    SELECT ARRAY(
-           SELECT word
-           FROM Words_in_game
-           WHERE room_token = p_room_token
-           ORDER BY RANDOM()
-           LIMIT 5
-       ) INTO ingame_words;
-
-    -- Обновляем статус слов на 'ingame'
-    UPDATE Words_in_game
-    SET status = 'ingame'
-    WHERE word = ANY(ingame_words)
-      AND room_token = p_room_token;
-
-    -- Назначаем одно слово активным (status = 'active')
-    SELECT word INTO selected_word
+SELECT word INTO current_active_word
     FROM Words_in_game
     WHERE room_token = p_room_token
-      AND status = 'ingame'
+      AND status = 'active'
     LIMIT 1;
 
-    UPDATE Words_in_game
-    SET status = 'active'
-    WHERE word = selected_word
-      AND room_token = p_room_token;
-
-    -- Возвращаем успешное сообщение с активным словом и списком ин-игровых слов
-    RETURN json_build_object(
-        'status', 'success',
-        'message', 'Active word selected'
-    );
-
-END;
+    -- Если есть текущее активное слово, сохраняем его в историю
+    IF current_active_word IS NOT NULL THEN
+        INSERT INTO active_word_history (room_token, active_word)
+        VALUES (p_room_token, current_active_word);
+    END IF;
 $$ LANGUAGE plpgsql;
 
 
