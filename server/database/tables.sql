@@ -136,3 +136,10 @@ CREATE TABLE decided_words (
     room_token TEXT PRIMARY KEY
 );
 
+CREATE TABLE active_word_history (
+    id SERIAL PRIMARY KEY,
+    room_token TEXT NOT NULL,
+    active_word TEXT NOT NULL,
+    round_start TIMESTAMP NOT NULL DEFAULT NOW()
+);
+

@@ -61,15 +61,12 @@ const Room = () => {
   useIntervalQuery(fetchGameData, 4000);
 
   useEffect(() => {
-    // setSocket(new WebSocket('ws://localhost:4000/'));
     const getLogin = async () => {
       const response = await UserService.getLoginCookie();
-      console.log('login ', response);
       setLogin(response.login);
     };
 
     getLogin();
-    // socket.current = new WebSocket('ws://localhost:4000/');
   }, []);
 
   const joinRoom = async () => {
