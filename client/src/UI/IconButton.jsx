@@ -2,6 +2,8 @@ import Question from '../assets/question.svg';
 import Info from '../assets/info.svg';
 import Empty from '../assets/empty.svg';
 import ArrowLeft from '../assets/arrow-left.svg';
+import ProgressiveImage from '../components/ProgressiveImage';
+import placeholderSrc from '../assets/white.svg';
 import Leave from '../assets/leave.svg';
 
 const IconButton = ({ icon, src, text, ...props }) => {
@@ -16,8 +18,7 @@ const IconButton = ({ icon, src, text, ...props }) => {
       ) : icon === 'leave' ? (
         <img src={Leave} />
       ) : icon === 'avatar' ? (
-        <img src={src} className="icon avatar" />
-
+        <ProgressiveImage src={src} placeholderSrc={placeholderSrc} className="icon avatar" />
       ) : <img src={Empty} />}
       {text}
     </button>

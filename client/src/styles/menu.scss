@@ -30,6 +30,20 @@ body {
   bottom: 4rem;
 }
 
+.plug {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $black;
+  position: absolute;
+  z-index: 1;
+  h1 {
+    color: $white;
+  }
+}
+
 .else {
   position: fixed;
   right: 4rem;

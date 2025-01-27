@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import UserService from '../API/UserService';
+import ProgressiveImage from '../components/ProgressiveImage';
 import { useFetching } from '../hooks/useFetching';
+import placeholderSrc from '../assets/white.svg';
 
 const Profile = () => {
   const [avatar, setAvatar] = useState('');
@@ -47,21 +49,30 @@ const Profile = () => {
   return (
     <section className="profile">
       <div className="myImg">
-        <img src={avatar} alt="User Avatar" className="avatar" />
+        <ProgressiveImage
+          src={avatar}
+          placeholderSrc={placeholderSrc}
+          className="avatar"
+        />
         <h1>{name}</h1>
       </div>
       <div className="otherImg">
         {images.map((img) => (
-          <img
+          <ProgressiveImage
             key={img}
             src={`/avatars/${img}`}
-            alt={`Avatar ${img}`}
+            placeholderSrc={placeholderSrc}
             className={`avatar ${choosedImg === img ? 'selected' : ''}`}
+            alt={`Avatar ${img}`}
             onClick={() => handleClick(img)}
           />
         ))}
       </div>
-      <button className="btn" onClick={handleSave} style={{marginBottom: '3rem'}}>
+      <button
+        className="btn"
+        onClick={handleSave}
+        style={{ marginBottom: '3rem' }}
+      >
         Сохранить и продолжить
       </button>
       <button className="btn white" onClick={handleLogout}>
