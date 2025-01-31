@@ -657,11 +657,58 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION _pick_active_words(
-    p_room_token TEXT, 
-    p_mode TEXT
-) RETURNS JSON AS $$
-SELECT word INTO current_active_word
+DECLARE
+    selected_word VARCHAR;
+    current_active_word VARCHAR;
+    ingame_words TEXT[];
+    remaining_words_count INT;
+BEGIN
+  
+    -- Логика для режима 'next'
+    IF p_mode = 'next' THEN
+        -- Удаляем старые слова раунда
+        DELETE FROM Words_in_game
+        WHERE room_token = p_room_token
+          AND (status = 'active' OR status = 'ingame');
+
+        -- Проверяем, есть ли достаточно слов
+        SELECT COUNT(*) INTO remaining_words_count
+        FROM Words_in_game
+        WHERE room_token = p_room_token
+          AND status = 'empty';
+    
+        IF remaining_words_count < 5 THEN
+            PERFORM _fill_words(p_room_token);
+        END IF;
+    END IF;
+
+    -- Общая логика для всех режимов
+    SELECT ARRAY(
+        SELECT word
+        FROM Words_in_game
+        WHERE room_token = p_room_token
+        ORDER BY RANDOM()
+        LIMIT 5
+    ) INTO ingame_words;
+
+    UPDATE Words_in_game
+    SET status = 'ingame'
+    WHERE word = ANY(ingame_words)
+      AND room_token = p_room_token;
+
+    -- Назначаем новое активное слово
+    SELECT word INTO selected_word
+    FROM Words_in_game
+    WHERE room_token = p_room_token
+      AND status = 'ingame'
+    LIMIT 1;
+
+    UPDATE Words_in_game
+    SET status = 'active'
+    WHERE word = selected_word
+      AND room_token = p_room_token;
+
+    SELECT word INTO current_active_word
     FROM Words_in_game
     WHERE room_token = p_room_token
       AND status = 'active'
@@ -672,7 +719,12 @@ SELECT word INTO current_active_word
         INSERT INTO active_word_history (room_token, active_word)
         VALUES (p_room_token, current_active_word);
     END IF;
-$$ LANGUAGE plpgsql;
+
+    RETURN json_build_object(
+        'status', 'success',
+        'message', 'Active word selected'
+    );
+END;
 
 
 CREATE OR REPLACE FUNCTION _pick_dany(

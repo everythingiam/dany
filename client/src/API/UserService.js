@@ -1,15 +1,14 @@
 import axios from 'axios';
-
-const API_BASE_URL = 'https://dany-production-api.up.railway.app/user/';
-// const API_BASE_URL = 'http://localhost:4000/user/';
+import config from "./config.js";
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: config.API_BASE_URL,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
 
 export default class UserService {
   static async postRegistration(values) {

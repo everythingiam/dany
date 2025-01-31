@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import config from "..config.js";
 
 const Chat = ({ token, login, data }) => {
   const [messages, setMessages] = useState([]);
@@ -7,7 +8,7 @@ const Chat = ({ token, login, data }) => {
   const messagesEndRef = useRef(); 
 
   useEffect(() => {
-    socket.current = new WebSocket('wss://dany-production-api.up.railway.app/');
+    socket.current = new WebSocket(config.WS_URL);
 
     socket.current.onopen = () => {
       socket.current.send(
