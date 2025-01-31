@@ -51,7 +51,7 @@ const Room = () => {
         setScore((prev) => ({ ...prev, persons: prev.persons + 1 }));
         setWinner('Победа за: Личности');
       } else if (!winner) {
-        setWinner('Стало слишком мало игроков');
+        setWinner('');
       }
     }
 

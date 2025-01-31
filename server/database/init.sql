@@ -1,3 +1,5 @@
+------------------- TABLES ---------------------
+
 CREATE TABLE Phases ( --есть
 	phase_name TEXT PRIMARY KEY,
 	phase_time_slow INT NOT NULL,
@@ -142,6 +144,10 @@ CREATE TABLE active_word_history (
     active_word TEXT NOT NULL,
     round_start TIMESTAMP NOT NULL DEFAULT NOW()
 );
+
+
+------------------- PRIVATE FUNCTIONS ---------------------
+
 
 CREATE OR REPLACE FUNCTION _is_token_valid(p_token TEXT)
 RETURNS JSON AS $$
@@ -1090,6 +1096,11 @@ BEGIN
     );
 END;
 $$ LANGUAGE plpgsql;
+
+
+
+------------------- PUBLIC FUNCTIONS ---------------------
+
 
 CREATE OR REPLACE FUNCTION authorize_user(p_login TEXT, p_password TEXT)
 RETURNS JSON AS $$
