@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import CanvasState from '../cards/canvasState';
 import { observer } from 'mobx-react-lite';
-import config from "..config.js";
+import config from "../config.js";
 
 const CardsCanvas = observer(({ token, data, login }) => {
   const [flag, setFlag] = useState(false);

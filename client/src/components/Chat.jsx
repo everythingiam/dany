@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import config from "..config.js";
+import config from "../config.js";
 
 const Chat = ({ token, login, data }) => {
   const [messages, setMessages] = useState([]);
