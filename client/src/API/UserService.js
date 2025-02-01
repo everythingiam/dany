@@ -2,7 +2,7 @@ import axios from 'axios';
 import config from "../config.js";
 
 const api = axios.create({
-  baseURL: config.API_BASE_URL,
+  baseURL: `${config.API_BASE_URL}/user`,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
