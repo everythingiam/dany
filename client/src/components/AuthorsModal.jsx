@@ -22,6 +22,12 @@ const AuthorsModal = ({ show, onHide }) => {
       </p>
       <p>от Университета ИТМО</p>
       <p style={{ marginTop: '2rem' }}>
+        <a href="https://github.com/everythingiam/dany" target="_blank">
+          Перейти к коду на GitHub 
+        </a>{' '}
+        →
+      </p>
+      <p style={{ marginTop: '2rem' }}>
         <strong>Фронтенд-разработчик:</strong>{' '}
         <a href="https://t.me/alinachnnl" target="_blank">
           Михайлова Алина
