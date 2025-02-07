@@ -670,7 +670,7 @@ BEGIN
     -- Обновляем статус карт на 'active'
     UPDATE decks
     SET status = 'active'
-    WHERE image_path = ANY(active_cards)
+    WHERE image_path = ANY(active_cards) 
       AND room_token = p_room_token;
 
     -- Возвращаем успешный результат
